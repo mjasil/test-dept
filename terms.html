@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions | DEPT STORE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .terms-container {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 1.5rem;
+            background: #fff;
+        }
+        .terms-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+        .terms-section {
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+        .terms-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--accent-black);
+            text-transform: uppercase;
+        }
+        .terms-section p, .terms-section ul {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+        .terms-section ul {
+            padding-left: 1.5rem;
+            list-style-type: disc;
+        }
+        .highlight-box {
+            background-color: #F8FAFC;
+            border-left: 4px solid var(--accent-black);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            font-style: italic;
+        }
+        .footer-signature {
+            margin-top: 3rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="light-theme">
+
+    <!-- Announcement Bar -->
+    <div class="announcement-bar">
+        <div class="marquee-content">
+            <i class="ph-bold ph-lightning"></i> Quality Products at Best Price.
+            <i class="ph-bold ph-truck"></i> Welcome To Dept Store.
+            <i class="ph-bold ph-lightning"></i> Quality Products at Best Price.
+        </div>
+    </div>
+
+    <!-- Main Navigation -->
+    <header class="header">
+        <div class="header-container">
+            <div class="header-left">
+                <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="ph ph-list"></i>
+                </button>
+                <a href="index.html" class="brand-logo">
+                    <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="logo-text" style="display:none;">DEPT. <span>STORE</span></span>
+                </a>
+            </div>
+
+            <nav class="header-right nav-links">
+                <a href="index.html">Home</a>
+                <a href="terms.html" class="active">Terms</a>
+                <a href="index.html#explore" class="nav-icon-link"><i class="ph ph-shopping-bag"></i> Shop Now</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
+    <div class="mobile-menu-drawer" id="mobileMenuDrawer">
+        <div class="mobile-menu-header">
+            <h3>Menu</h3>
+            <button class="icon-btn" onclick="toggleMobileMenu()"><i class="ph ph-x"></i></button>
+        </div>
+        <ul class="mobile-nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#collections">Our Collections</a></li>
+            <li><a href="index.html#explore">Explore Products</a></li>
+            <li><a href="terms.html">Terms & Conditions</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="terms-container">
+        <h1 class="terms-title">TERMS & CONDITIONS</h1>
+
+        <div class="terms-section">
+            <h3>RETURN & REPLACEMENT POLICY</h3>
+            <p>You can return the product for a replacement if the product is the wrong size, incorrect, or damaged.</p>
+            <p>We do not offer exchanges, returns, or refunds for reasons related to personal preferences or dislikes. We strive to provide the best, but individual tastes and preferences may vary.</p>
+            <p>Refunds are not available, only replacements. However, if the product is lost by the courier service, a refund is applicable under specific conditions.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>UNBOXING VIDEO REQUIREMENTS</h3>
+            <p>A 360-degree video of unboxing the parcel is <strong>mandatory</strong> for any claims related to damage, size incorrect, missing items, etc. The issue must be clearly shown in the video without any pauses or cuts. This must be reported within 24 hours of receiving the parcel.</p>
+            <ul>
+                <li>The video should begin by showing the address label as sent by us, including the outer packaging.</li>
+                <li>Some customers forget to take an unboxing video and later create fake videos. We do not accept such videos as proof. All customers must follow our guidelines.</li>
+            </ul>
+        </div>
+
+        <div class="terms-section">
+            <h3>IMPORTANT NOTES</h3>
+            <p>Slight color variation or light/dark differences due to digital photography or device screen settings may occur. Therefore, images shown may differ slightly from the actual product.</p>
+            <p>Minor issues like loose threads, removable stains, or slight stitching imperfections are not considered damages.</p>
+            
+            <div class="highlight-box">
+                <strong>*KEEP IN MIND:</strong><br><br>
+                Cancellation is not allowed after placing the order.<br><br>
+                If you want to replace a product, you must bear the courier charges. If the issue is from our side, we will cover the courier cost only after you provide the dispatch slip.<br><br>
+                The quality of the product is based on the price you pay.
+            </div>
+        </div>
+
+        <div class="terms-section">
+            <h3>SHIPPING & DELIVERY</h3>
+            <p>We are not the owners of any courier services.</p>
+            <p>We send parcels through third-party courier services. If there is any delay in delivery, we are not responsible as it is beyond our control. However, 24x7 support is available from our side with 100% effort to resolve the issue. If the issue remains unresolved, it will be handled through mutual discussion.</p>
+            <p>Do not request refunds or order cancellations due to courier delays. Please be patient and cooperate.</p>
+        </div>
+
+        <div class="terms-section">
+            <h3>SIZE REPLACEMENT CONDITIONS</h3>
+            <p>If you wish to replace the delivered product with the same shoes in a different size, it will be processed based on stock availability.</p>
+            <p>However, if you ordered size 10 and received the correct size as per your order but later wish to exchange for a larger size, this is not possible, as we clearly specify the maximum available size (size 10) before purchase. Similarly, if you order size 6 and wish to replace it with size 5 (which is smaller), this is also not possible. Please keep this in mind while placing your order.</p>
+        </div>
+
+        <div class="terms-section">
+            <p><strong>Note:</strong> Read carefully; do not scroll without understanding. Later, do not blame us. For more terms and conditions, check our website. If you have any doubts, clarify them with us before placing an order.</p>
+        </div>
+
+        <div class="footer-signature">
+            BEST REGARDS,<br>
+            Dept Store
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <p>&copy; 2026 DEPT STORE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Fixed Button -->
+    <a href="https://wa.me/918281097861" target="_blank" class="floating-whatsapp">
+        <i class="ph-fill ph-whatsapp-logo"></i>
+    </a>
+
+    <script src="main.js"></script>
+</body>
+</html>
