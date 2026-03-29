@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEPT STORE | Premium Tech Gadgets</title>
+    <meta name="description" content="A premium, futuristic 3D eCommerce store for top-tier tech gadgets, featuring dark theme glassmorphism and smooth animations.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons (Phosphor Icons) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <!-- Fallback to text if logo not present -->
+                <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <span class="logo-text" style="display:none;">DEPT.<span>STORE</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#hero" class="active">Home</a></li>
+                <li><a href="#categories">Shop</a></li>
+                <li><a href="#trending">Trending</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="icon-btn tooltip-anchor" data-tooltip="Search">
+                    <i class="ph ph-magnifying-glass"></i>
+                </button>
+                <button class="icon-btn tooltip-anchor" data-tooltip="Profile">
+                    <i class="ph ph-user"></i>
+                </button>
+                <button class="icon-btn cart-btn tooltip-anchor" data-tooltip="Cart" onclick="toggleCart()">
+                    <i class="ph ph-shopping-cart"></i>
+                    <span class="cart-badge">0</span>
+                </button>
+                <button class="mobile-menu-btn icon-btn">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" onclick="toggleCart()"></div>
+    <div class="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <button class="icon-btn close-cart" onclick="toggleCart()">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
+        <div class="cart-items">
+            <!-- Empty State -->
+            <div class="empty-cart">
+                <i class="ph ph-shopping-bag ph-3x"></i>
+                <p>Your cart is empty.</p>
+                <button class="btn btn-outline" onclick="toggleCart()">Continue Shopping</button>
+            </div>
+            <!-- Example Item (Populated via JS) -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="btn btn-primary w-full shadow-glow" onclick="openCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content glass-panel">
+            <button class="icon-btn close-checkout" onclick="closeCheckout()">
+                <i class="ph ph-x"></i>
+            </button>
+            <h2>Secure Checkout</h2>
+            <div class="checkout-steps">
+                <div class="step active">1. Details</div>
+                <div class="step">2. Payment</div>
+            </div>
+            <form id="checkoutForm" onsubmit="handleCheckout(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" required placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Shipping Address</label>
+                    <textarea required placeholder="123 Tech Street..."></textarea>
+                </div>
+                <button type="button" class="btn btn-primary w-full" onclick="simulatePaymentFlow()">Proceed to Payment</button>
+            </form>
+            <div id="paymentFlow" style="display:none;" class="payment-flow">
+                <div class="spinner"></div>
+                <p>Initializing secure payment gateway...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="hero-3d-container" id="canvas-container">
+                <!-- 3D Canvas injected here -->
+            </div>
+            <div class="hero-content">
+                <div class="hero-badge glitch" data-text="Next-Gen Gear">Next-Gen Gear</div>
+                <h1 class="hero-title">Elevate Your <br><span class="text-gradient">Tech Reality.</span></h1>
+                <p class="hero-subtitle">Discover premium, futuristic gadgets engineered for the top 1%.</p>
+                <div class="hero-cta">
+                    <button class="btn btn-primary btn-lg shadow-glow" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">
+                        Shop Now <i class="ph ph-arrow-right"></i>
+                    </button>
+                    <button class="btn btn-outline btn-lg">Explore 3D</button>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="categories-section">
+            <div class="section-header">
+                <h2>Browse by <span class="text-gradient">Category</span></h2>
+            </div>
+            <div class="categories-grid">
+                <div class="category-card glass-panel group">
+                    <div class="cat-icon"><i class="ph ph-device-mobile ph-2x"></i></div>
+                    <h3>Smartphones</h3>
+                    <p>Flagship devices</p>
+                    <div class="hover-circle"></div>
+                </div>
+                <div class="category-card glass-panel group">
+                    <div class="cat-icon"><i class="ph ph-headphones ph-2x"></i></div>
+                    <h3>Audio</h3>
+                    <p>Studio grade</p>
+                    <div class="hover-circle"></div>
+                </div>
+                <div class="category-card glass-panel group">
+                    <div class="cat-icon"><i class="ph ph-watch ph-2x"></i></div>
+                    <h3>Wearables</h3>
+                    <p>Next-gen tech</p>
+                    <div class="hover-circle"></div>
+                </div>
+                <div class="category-card glass-panel group">
+                    <div class="cat-icon"><i class="ph ph-game-controller ph-2x"></i></div>
+                    <h3>Gaming</h3>
+                    <p>Unlimited power</p>
+                    <div class="hover-circle"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Products -->
+        <section id="featured" class="featured-section">
+            <div class="section-header">
+                <h2>Featured <span class="text-gradient">Drops</span></h2>
+                <button class="btn btn-text">View All <i class="ph ph-caret-right"></i></button>
+            </div>
+            <div class="products-grid" id="featuredProducts">
+                <!-- Injected via JS -->
+            </div>
+        </section>
+
+        <!-- Parallax Banner -->
+        <section class="banner-section parallax-container">
+            <div class="parallax-bg gradient-bg"></div>
+            <div class="banner-content glass-panel">
+                <h2>The Future of Connectivity</h2>
+                <p>Experience the seamless integration of artificial intelligence and daily hardware.</p>
+                <button class="btn btn-primary shadow-glow">Learn More</button>
+            </div>
+        </section>
+
+        <!-- Trending Horizontal Scroll -->
+        <section id="trending" class="trending-section">
+            <div class="section-header">
+                <h2>Trending <span class="text-gradient">Now</span></h2>
+            </div>
+            <div class="trending-wrapper">
+                <div class="trending-carousel" id="trendingCarousel">
+                    <!-- Injected via JS -->
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="icon-btn" onclick="scrollCarousel(-1)"><i class="ph ph-arrow-left"></i></button>
+                <button class="icon-btn" onclick="scrollCarousel(1)"><i class="ph ph-arrow-right"></i></button>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section id="testimonials" class="testimonials-section">
+             <div class="section-header">
+                <h2>What the <span class="text-gradient">Elites</span> Say</h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card glass-panel">
+                    <div class="rating">
+                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                    </div>
+                    <p class="review-text">"Absolutely mind-blowing interface and the product delivery was instantaneous. The UX is genuinely 10 years ahead."</p>
+                    <div class="reviewer">
+                        <div class="avatar" style="background-color: var(--accent-blue)">AR</div>
+                        <div>
+                            <h4>Alex R.</h4>
+                            <span>Tech Entrepreneur</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card glass-panel">
+                    <div class="rating">
+                        <i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i><i class="ph-fill ph-star"></i>
+                    </div>
+                    <p class="review-text">"The smoothest eCommerce flow I've ever experienced. DEPT sets the standard for how premium brands should look online."</p>
+                    <div class="reviewer">
+                        <div class="avatar" style="background-color: var(--accent-purple)">MK</div>
+                        <div>
+                            <h4>Maya K.</h4>
+                            <span>UI/UX Designer</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                     <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                     <span class="logo-text" style="display:none;">DEPT.<span>STORE</span></span>
+                </div>
+                <p>Curating the future of technology.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="#">Phones</a></li>
+                    <li><a href="#">Audio</a></li>
+                    <li><a href="#">Wearables</a></li>
+                    <li><a href="#">Gaming</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refunds</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 DEPT STORE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Floating Actions -->
+    <div class="floating-actions">
+        <!-- Wishlist -->
+        <button class="fab-btn tooltip-left" data-tooltip="Wishlist">
+            <i class="ph ph-heart"></i>
+        </button>
+        <!-- Instagram -->
+        <a href="https://www.instagram.com/deptstore.official" target="_blank" class="fab-btn tooltip-left" data-tooltip="Instagram">
+            <i class="ph ph-instagram-logo"></i>
+        </a>
+        <!-- Whatsapp -->
+        <a href="https://wa.me/918281097861" target="_blank" rel="noopener noreferrer" class="fab-btn whatsapp-btn tooltip-left" data-tooltip="Chat on WhatsApp">
+            <i class="ph ph-whatsapp-logo"></i>
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <!-- GSAP for Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- Vanilla Tilt for cards -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+    <!-- Three.js for 3D Hero -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Application Logic -->
+    <script src="main.js"></script>
+</body>
+</html>
