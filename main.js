@@ -165,74 +165,99 @@ function setupSearch() {
 
 // --- RENDER PRODUCTS ---
 function renderProducts() {
-    if (!elements.productGrid) return;
+// ============================================================
+// REPLACE the renderProductDetail() function in your main.js
+// Find: "function renderProductDetail()" and replace the 
+// entire function with this:
+// ============================================================
+
+async function renderProductDetail() {
+    const detailArea = document.getElementById('productDetailArea');
+    const loadingEl = document.getElementById('productLoading');
+    if (!detailArea) return;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const categoryFilter = urlParams.get('category');
-    const searchFilter = urlParams.get('search');
+    const id = urlParams.get('id');
 
-    // Update page title
-    const titleEl = document.getElementById('catalogTitle');
-    if (titleEl) {
-        if (categoryFilter) {
-            titleEl.textContent = categoryFilter.toUpperCase() + " COLLECTION";
-        } else if (searchFilter) {
-            titleEl.textContent = `SEARCH RESULTS FOR "${searchFilter.toUpperCase()}"`;
-        }
-    }
-
-    if (state.products.length === 0) {
-        elements.productGrid.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
-                No products found in this category.
-            </div>`;
+    if (!id) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        detailArea.style.display = 'block';
+        detailArea.innerHTML = `<h2 style="text-align:center;color:var(--text-muted)">Product not found</h2>`;
         return;
     }
 
-    elements.productGrid.innerHTML = state.products.map(product => {
-        // Firebase products use imageURL field
-        const imgContent = product.imageURL
-            ? `<img src="${product.imageURL}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
-            : `<i class="ph ph-watch"></i>`;
+    try {
+        // Fetch this single product directly from Firebase by ID
+        const { getDoc, doc } = await import(
+            "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js"
+        );
+        const docSnap = await getDoc(doc(db, "products", id));
 
-        const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+        if (loadingEl) loadingEl.style.display = 'none';
+        detailArea.style.display = 'block';
 
-        return `
-        <div class="product-card">
-            <a href="product.html?id=${product.id}" style="text-decoration:none; color:inherit; display:block; flex:1">
-                <div class="product-img-wrap">
-                    ${imgContent}
-                    ${product.tag ? `<span style="position:absolute; top:10px; left:10px; background:var(--accent-black); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">${product.tag}</span>` : ''}
-                    ${product.stock === 0 ? `<span style="position:absolute; top:10px; right:10px; background:#ef4444; color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">OUT OF STOCK</span>` : ''}
-                </div>
-                <div class="product-body" style="padding-bottom:0;">
-                    <h3>${product.name}</h3>
-                    ${product.rating ? `
-                    <div class="product-rating">
-                        ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
-                    </div>` : ''}
-                    <div class="product-price">
-                        ${hasDiscount ? `<span class="old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
-                        <span class="new-price">Rs. ${Number(product.price).toLocaleString()}</span>
-                    </div>
-                </div>
-            </a>
-            <div class="product-actions" style="padding:1rem 1.25rem 1.25rem;">
-                <button class="btn btn-outline btn-cart" 
-                    onclick="addToCart('${product.id}')" 
-                    title="Add to Cart"
-                    ${product.stock === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
-                    <i class="ph ph-shopping-bag"></i>
-                </button>
-                <button class="btn btn-green btn-buy" 
-                    onclick="buyNow('${product.id}')"
-                    ${product.stock === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
-                    ${product.stock === 0 ? 'OUT OF STOCK' : 'BUY NOW'}
-                </button>
+        if (!docSnap.exists()) {
+            detailArea.innerHTML = `<h2 style="text-align:center;color:var(--text-muted)">Product not found</h2>`;
+            return;
+        }
+
+        const product = { id: docSnap.id, ...docSnap.data() };
+
+        // Also push to state so addToCart works
+        if (!state.products.find(p => p.id === product.id)) {
+            state.products.push(product);
+        }
+
+        const hasDiscount = product.originalPrice && Number(product.originalPrice) > Number(product.price);
+
+        detailArea.innerHTML = `
+            <div class="pd-image">
+                ${product.imageURL
+                    ? `<img src="${product.imageURL}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
+                    : `<i class="ph ph-watch" style="font-size:6rem;color:#555;"></i>`
+                }
+                ${product.tag ? `<span style="position:absolute;top:20px;left:20px;background:#000;color:#fff;font-size:0.9rem;font-weight:700;padding:6px 12px;border-radius:6px;z-index:2;">${product.tag}</span>` : ''}
             </div>
-        </div>`;
-    }).join('');
+            <div class="pd-info">
+                <h1 class="pd-title">${product.name}</h1>
+                ${product.rating ? `
+                <div class="pd-rating">
+                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))}
+                    <span>(${product.rating})</span>
+                </div>` : ''}
+                <div class="pd-price-wrap">
+                    <span class="pd-new-price">Rs. ${Number(product.price).toLocaleString()}</span>
+                    ${hasDiscount ? `<span class="pd-old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
+                </div>
+                <p class="pd-desc" style="white-space: pre-line;">
+                    ${product.description || 'Premium quality product. Carefully crafted for durability and style.'}
+                </p>
+                <p style="color:${Number(product.stock) > 0 ? '#4ade80' : '#ef4444'};font-weight:600;margin-bottom:1rem;">
+                    ${Number(product.stock) > 0 ? `✓ In Stock (${product.stock} available)` : '✗ Out of Stock'}
+                </p>
+                <div class="pd-actions">
+                    <button class="btn btn-green" 
+                        onclick="buyNow('${product.id}')"
+                        ${Number(product.stock) === 0 ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        BUY NOW
+                    </button>
+                    <button class="btn btn-outline" 
+                        onclick="addToCart('${product.id}')"
+                        ${Number(product.stock) === 0 ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+                        <i class="ph ph-shopping-bag"></i> Add to Cart
+                    </button>
+                </div>
+            </div>
+        `;
+
+    } catch (error) {
+        console.error('Error loading product:', error);
+        if (loadingEl) loadingEl.style.display = 'none';
+        detailArea.style.display = 'block';
+        detailArea.innerHTML = `<h2 style="text-align:center;color:var(--text-muted)">Failed to load product. Please refresh.</h2>`;
+    }
 }
+
 
 // --- RENDER SINGLE PRODUCT DETAIL ---
 function renderProductDetail() {
