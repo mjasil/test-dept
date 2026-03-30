@@ -17,7 +17,14 @@
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-theme">
+<body>
+
+    <!-- Animated Background Glow -->
+    <div class="bg-glow">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
 
     <!-- Announcement Bar -->
     <div class="announcement-bar">
@@ -29,7 +36,7 @@
     </div>
 
     <!-- Main Navigation -->
-    <header class="header">
+    <header class="header" id="mainHeader">
         <div class="header-container">
             <div class="header-left">
                 <!-- Hamburger for Mobile -->
@@ -90,7 +97,7 @@
     <!-- Main Content -->
     <main>
         <!-- Hero Banner Section -->
-        <section class="hero-banner">
+        <section class="hero-banner reveal">
             <div class="banner-container">
                 <!-- A placeholder grey box simulating the large image slider on Traft -->
                 <div class="banner-image">
@@ -112,7 +119,7 @@
         </section>
 
         <!-- Our Collections -->
-        <section id="collections" class="section-container">
+        <section id="collections" class="section-container reveal">
             <h2 class="section-title">OUR COLLECTIONS.</h2>
             <div class="collections-flex">
                 <div class="collection-card">
@@ -140,7 +147,7 @@
         </section>
 
         <!-- Explore Products Grid -->
-        <section id="explore" class="section-container">
+        <section id="explore" class="section-container reveal">
             <h2 class="section-title">EXPLORE.</h2>
             <div class="product-grid" id="productGrid">
                 <!-- Products injected via renderProducts() in main.js -->
@@ -148,7 +155,7 @@
         </section>
 
         <!-- Value Propositions -->
-        <section class="features-section">
+        <section class="features-section reveal">
             <div class="features-grid">
                 <div class="feature-card">
                     <i class="ph ph-shield-check"></i>
@@ -342,5 +349,46 @@
 
     <!-- Custom JS Application Logic -->
     <script src="main.js"></script>
+    <script>
+        // Header scroll glow
+        window.addEventListener('scroll', () => {
+            const h = document.getElementById('mainHeader');
+            if(h) h.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        // Scroll reveal — sections
+        const sectionObs = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if(e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    sectionObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.reveal').forEach(el => sectionObs.observe(el));
+
+        // Staggered card reveal — product cards, feature cards, collection cards
+        const cardObs = new IntersectionObserver((entries) => {
+            entries.forEach((e, i) => {
+                if(e.isIntersecting) {
+                    const delay = Array.from(e.target.parentElement.children).indexOf(e.target) * 80;
+                    setTimeout(() => e.target.classList.add('card-visible'), delay);
+                    cardObs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.05 });
+
+        // Observe after products are rendered
+        const waitForCards = setInterval(() => {
+            const cards = document.querySelectorAll('.product-card, .feature-card, .collection-card');
+            if(cards.length > 0) {
+                clearInterval(waitForCards);
+                cards.forEach(c => {
+                    c.classList.add('card-reveal');
+                    cardObs.observe(c);
+                });
+            }
+        }, 100);
+    </script>
 </body>
 </html>

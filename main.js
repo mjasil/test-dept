@@ -57,11 +57,11 @@ function renderProducts() {
                     <span class="old-price">Rs. ${product.originalPrice}</span>
                     <span class="new-price">Rs. ${product.price}</span>
                 </div>
-                <div style="display: flex; gap: 0.5rem; margin-top: auto;">
-                    <button class="btn btn-outline w-full" style="padding: 0.6rem; font-size:1.2rem;" onclick="addToCart(${product.id})" title="Add to Cart">
+                <div class="product-actions">
+                    <button class="btn btn-outline btn-cart" onclick="addToCart(${product.id})" title="Add to Cart">
                         <i class="ph ph-shopping-bag"></i>
                     </button>
-                    <button class="btn btn-green w-full" style="padding: 0.6rem; flex: 2;" onclick="buyNow(${product.id})">
+                    <button class="btn btn-green btn-buy" onclick="buyNow(${product.id})">
                         BUY NOW
                     </button>
                 </div>
