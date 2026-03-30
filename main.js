@@ -72,6 +72,7 @@ const elements = {
 document.addEventListener('DOMContentLoaded', () => {
     applySiteAssets();
     setupSearch();
+    renderProductDetail();
     renderProducts();
     updateCartUI();
 });
@@ -142,30 +143,83 @@ function renderProducts() {
         
         return `
         <div class="product-card">
-            <div class="product-img-wrap">
-                ${imgContent}
-                ${product.tag ? `<span style="position:absolute; top:10px; left:10px; background:var(--accent-black); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">${product.tag}</span>` : ''}
-            </div>
-            <div class="product-body">
-                <h3>${product.name}</h3>
-                <div class="product-rating">
-                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
+            <a href="product.html?id=${product.id}" style="text-decoration:none; color:inherit; display:block; flex:1">
+                <div class="product-img-wrap">
+                    ${imgContent}
+                    ${product.tag ? `<span style="position:absolute; top:10px; left:10px; background:var(--accent-black); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">${product.tag}</span>` : ''}
                 </div>
-                <div class="product-price">
-                    <span class="old-price">Rs. ${product.originalPrice}</span>
-                    <span class="new-price">Rs. ${product.price}</span>
+                <div class="product-body" style="padding-bottom: 0;">
+                    <h3>${product.name}</h3>
+                    <div class="product-rating">
+                        ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
+                    </div>
+                    <div class="product-price">
+                        <span class="old-price">Rs. ${product.originalPrice}</span>
+                        <span class="new-price">Rs. ${product.price}</span>
+                    </div>
                 </div>
-                <div class="product-actions">
-                    <button class="btn btn-outline btn-cart" onclick="addToCart(${product.id})" title="Add to Cart">
-                        <i class="ph ph-shopping-bag"></i>
-                    </button>
-                    <button class="btn btn-green btn-buy" onclick="buyNow(${product.id})">
-                        BUY NOW
-                    </button>
-                </div>
+            </a>
+            <div class="product-actions" style="padding: 1rem 1.25rem 1.25rem;">
+                <button class="btn btn-outline btn-cart" onclick="addToCart(${product.id})" title="Add to Cart">
+                    <i class="ph ph-shopping-bag"></i>
+                </button>
+                <button class="btn btn-green btn-buy" onclick="buyNow(${product.id})">
+                    BUY NOW
+                </button>
             </div>
         </div>`;
     }).join('');
+}
+
+// --- RENDER SINGLE PRODUCT DETAIL ---
+function renderProductDetail() {
+    const detailArea = document.getElementById('productDetailArea');
+    if (!detailArea) return;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = parseInt(urlParams.get('id'));
+    const product = state.products.find(p => p.id === id);
+
+    if (!product) {
+        detailArea.innerHTML = `<h2 style="text-align:center;width:100%;color:var(--text-muted)">Product not found</h2>`;
+        return;
+    }
+
+    const imgSrc = SITE_ASSETS.products[product.id];
+    const imgContent = imgSrc 
+        ? `<img src="${imgSrc}" alt="${product.name}">` 
+        : `<i class="ph ${product.imageHolder}"></i>`;
+
+    detailArea.innerHTML = `
+        <div class="pd-image">
+            ${imgContent}
+            ${product.tag ? `<span style="position:absolute; top:20px; left:20px; background:var(--accent-black); color:#fff; font-size:0.9rem; font-weight:700; padding:6px 12px; border-radius:6px; z-index:2;">${product.tag}</span>` : ''}
+        </div>
+        <div class="pd-info">
+            <h1 class="pd-title">${product.name}</h1>
+            <div class="pd-rating">
+                ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
+            </div>
+            <div class="pd-price-wrap">
+                <span class="pd-new-price">Rs. ${product.price}</span>
+                <span class="pd-old-price">Rs. ${product.originalPrice}</span>
+            </div>
+            <p class="pd-desc">
+                Experience the premium quality of the ${product.name}. Carefully crafted for durability and style, providing unmatched comfort and performance for daily use.
+            </p>
+            <div class="pd-actions">
+                <button class="btn btn-green" onclick="buyNow(${product.id})">BUY NOW</button>
+                <button class="btn btn-outline" onclick="addToCart(${product.id})"><i class="ph ph-shopping-bag"></i> Add to Cart</button>
+            </div>
+            
+            <div class="pd-perks">
+                <p><i class="ph ph-truck"></i> Free Shipping Available</p>
+                <p><i class="ph ph-arrow-counter-clockwise"></i> 7 Days Return Policy</p>
+                <p><i class="ph ph-shield-check"></i> 1 Year Warranty</p>
+                <p><i class="ph ph-currency-inr"></i> Cash on Delivery Available</p>
+            </div>
+        </div>
+    `;
 }
 
 // --- APPLY SITE ASSETS ---
