@@ -11,12 +11,13 @@ import { getFirestore, collection, getDocs, addDoc, query, where }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyB5CGMpMGsInKMHwpTboKYa-bKNSrSxQsA",
+    authDomain: "dept-store-ae1d4.firebaseapp.com",
+    databaseURL: "https://dept-store-ae1d4-default-rtdb.firebaseio.com",
+    projectId: "dept-store-ae1d4",
+    storageBucket: "dept-store-ae1d4.firebasestorage.app",
+    messagingSenderId: "704212117774",
+    appId: "1:704212117774:web:31ef72455c76d006e7cf5f"
 };
 
 const app = initializeApp(firebaseConfig);
