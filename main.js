@@ -211,13 +211,6 @@ function renderProductDetail() {
                 <button class="btn btn-green" onclick="buyNow(${product.id})">BUY NOW</button>
                 <button class="btn btn-outline" onclick="addToCart(${product.id})"><i class="ph ph-shopping-bag"></i> Add to Cart</button>
             </div>
-            
-            <div class="pd-perks">
-                <p><i class="ph ph-truck"></i> Free Shipping Available</p>
-                <p><i class="ph ph-arrow-counter-clockwise"></i> 7 Days Return Policy</p>
-                <p><i class="ph ph-shield-check"></i> 1 Year Warranty</p>
-                <p><i class="ph ph-currency-inr"></i> Cash on Delivery Available</p>
-            </div>
         </div>
     `;
 }
@@ -406,6 +399,15 @@ window.selectPayment = (type) => {
 window.submitOrder = () => {
     const name = document.getElementById('chkName').value;
     const phone = document.getElementById('chkPhone').value;
+    const altPhone = document.getElementById('chkAltPhone').value;
+    const address = document.getElementById('chkAddress').value;
+    const size = document.getElementById('chkSize'); // Newly added Size element
+    const sizeVal = size && size.value ? size.value : 'N/A';
+    const pin = document.getElementById('chkPin').value;
+    const city = document.getElementById('chkCity').value;
+    const stateVal = document.getElementById('chkState').value;
+    const landmark = document.getElementById('chkLandmark').value;
+    const insta = document.getElementById('chkInsta').value;
     const paymentRadio = document.querySelector('input[name="paymentMethod"]:checked');
     const btn = document.querySelector('.place-order-btn');
 
