@@ -71,9 +71,33 @@ const elements = {
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
     applySiteAssets();
+    setupSearch();
     renderProducts();
     updateCartUI();
 });
+
+// --- SEARCH LOGIC ---
+function setupSearch() {
+    const searchBars = document.querySelectorAll('.search-bar');
+    searchBars.forEach(bar => {
+        const input = bar.querySelector('input');
+        const btn = bar.querySelector('button');
+
+        const doSearch = () => {
+            const query = input.value.trim();
+            if (query) {
+                window.location.href = `catalog.html?search=${encodeURIComponent(query)}`;
+            }
+        };
+
+        if (btn) btn.addEventListener('click', doSearch);
+        if (input) {
+            input.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') doSearch();
+            });
+        }
+    });
+}
 
 // --- RENDER PRODUCTS ---
 function renderProducts() {
@@ -82,13 +106,26 @@ function renderProducts() {
     // Check for category filter in URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFilter = urlParams.get('category');
+    const searchFilter = urlParams.get('search');
     
     let productsToRender = state.products;
+    
     if (categoryFilter) {
         productsToRender = state.products.filter(p => p.category === categoryFilter.toLowerCase());
         const titleEl = document.getElementById('catalogTitle');
         if (titleEl) {
             titleEl.textContent = categoryFilter.toUpperCase() + " COLLECTION";
+        }
+    } else if (searchFilter) {
+        const q = searchFilter.toLowerCase();
+        productsToRender = state.products.filter(p => 
+            p.name.toLowerCase().includes(q) || 
+            (p.tag && p.tag.toLowerCase().includes(q)) || 
+            (p.category && p.category.toLowerCase().includes(q))
+        );
+        const titleEl = document.getElementById('catalogTitle');
+        if (titleEl) {
+            titleEl.textContent = `SEARCH RESULTS FOR "${searchFilter.toUpperCase()}"`;
         }
     }
 
