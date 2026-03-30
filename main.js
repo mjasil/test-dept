@@ -42,14 +42,14 @@ const SITE_ASSETS = {
 const state = {
     cart: [],
     products: [
-        { id: 101, name: "G-SHOCK CASIOAK BLUE", originalPrice: 4999, price: 1999, rating: 4.8, imageHolder: "ph-watch", tag: "BEST SELLER" },
-        { id: 102, name: "ROLEX SUBMARINER BLACK", originalPrice: 12000, price: 3499, rating: 5.0, imageHolder: "ph-watch", tag: "PREMIUM" },
-        { id: 103, name: "APPLE AIRPODS PRO GEN 2", originalPrice: 3500, price: 1199, rating: 4.5, imageHolder: "ph-earbuds", tag: "SALE" },
-        { id: 104, name: "DIESEL MEGA CHIEF GOLD", originalPrice: 8000, price: 2499, rating: 4.6, imageHolder: "ph-watch" },
-        { id: 105, name: "SMARTWATCH ULTRA 8", originalPrice: 2999, price: 999, rating: 4.2, imageHolder: "ph-watch" },
-        { id: 106, name: "PATEK PHILIPPE NAUTILUS", originalPrice: 15000, price: 4500, rating: 4.9, imageHolder: "ph-watch", tag: "LUXURY" },
-        { id: 107, name: "SAMSUNG GALAXY BUDS", originalPrice: 2500, price: 899, rating: 4.3, imageHolder: "ph-headphones" },
-        { id: 108, name: "HUBLOT BIG BANG CHRONO", originalPrice: 18000, price: 5999, rating: 4.7, imageHolder: "ph-watch" }
+        { id: 101, name: "G-SHOCK CASIOAK BLUE", originalPrice: 4999, price: 1999, rating: 4.8, category: "watch", imageHolder: "ph-watch", tag: "BEST SELLER" },
+        { id: 102, name: "ROLEX SUBMARINER BLACK", originalPrice: 12000, price: 3499, rating: 5.0, category: "watch", imageHolder: "ph-watch", tag: "PREMIUM" },
+        { id: 103, name: "APPLE AIRPODS PRO GEN 2", originalPrice: 3500, price: 1199, rating: 4.5, category: "airpods", imageHolder: "ph-earbuds", tag: "SALE" },
+        { id: 104, name: "DIESEL MEGA CHIEF GOLD", originalPrice: 8000, price: 2499, rating: 4.6, category: "watch", imageHolder: "ph-watch" },
+        { id: 105, name: "SMARTWATCH ULTRA 8", originalPrice: 2999, price: 999, rating: 4.2, category: "watch", imageHolder: "ph-watch" },
+        { id: 106, name: "NIKE AIR JORDAN 1 HIGH", originalPrice: 15000, price: 4500, rating: 4.9, category: "shoe", imageHolder: "ph-sneaker", tag: "LUXURY" },
+        { id: 107, name: "SONY WH-1000XM5 ANC", originalPrice: 25000, price: 8999, rating: 4.9, category: "headphone", imageHolder: "ph-headphones" },
+        { id: 108, name: "HUBLOT BIG BANG CHRONO", originalPrice: 18000, price: 5999, rating: 4.7, category: "watch", imageHolder: "ph-watch" }
     ]
 };
 
@@ -78,8 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- RENDER PRODUCTS ---
 function renderProducts() {
     if(!elements.productGrid) return;
+    
+    // Check for category filter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const categoryFilter = urlParams.get('category');
+    
+    let productsToRender = state.products;
+    if (categoryFilter) {
+        productsToRender = state.products.filter(p => p.category === categoryFilter.toLowerCase());
+        const titleEl = document.getElementById('catalogTitle');
+        if (titleEl) {
+            titleEl.textContent = categoryFilter.toUpperCase() + " COLLECTION";
+        }
+    }
 
-    elements.productGrid.innerHTML = state.products.map(product => {
+    if(productsToRender.length === 0) {
+        elements.productGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">No products found in this category.</div>`;
+        return;
+    }
+
+    elements.productGrid.innerHTML = productsToRender.map(product => {
         const imgSrc = SITE_ASSETS.products[product.id];
         const imgContent = imgSrc
             ? `<img src="${imgSrc}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`

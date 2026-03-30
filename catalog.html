@@ -59,7 +59,7 @@
             </div>
 
             <nav class="header-right nav-links">
-                <a href="#" class="active">Home</a>
+                <a href="index.html">Home</a>
                 <a href="terms.html">Terms</a>
                 <a href="#" class="nav-icon-link"><i class="ph ph-truck"></i> Track Order</a>
                 <button class="cart-icon-btn" onclick="toggleCart()">
@@ -86,7 +86,7 @@
             <button class="icon-btn" onclick="toggleMobileMenu()"><i class="ph ph-x"></i></button>
         </div>
         <ul class="mobile-nav-links">
-            <li><a href="#">Home</a></li>
+            <li><a href="index.html">Home</a></li>
             <li><a href="#collections">Our Collections</a></li>
             <li><a href="#explore">Explore Products</a></li>
             <li><a href="terms.html">Terms & Conditions</a></li>
@@ -96,87 +96,11 @@
 
     <!-- Main Content -->
     <main>
-        <!-- Hero Banner Section -->
-        <section class="hero-banner reveal">
-            <div class="banner-container">
-                <!-- A placeholder grey box simulating the large image slider on Traft -->
-                <div class="banner-image">
-                     <div class="banner-text-overlay">
-                        <h2>LOVED BY <span>30K+</span> CUSTOMERS</h2>
-                        <div class="quality-badge">
-                            <i class="ph-fill ph-check-circle"></i> BEST QUALITY
-                        </div>
-                     </div>
-                </div>
-                <!-- Banner Slider Controls -->
-                <button class="slider-btn prev-btn"><i class="ph ph-caret-left"></i></button>
-                <button class="slider-btn next-btn"><i class="ph ph-caret-right"></i></button>
-                <div class="slider-dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Our Collections -->
-        <section id="collections" class="section-container reveal">
-            <h2 class="section-title">OUR COLLECTIONS.</h2>
-            <div class="collections-flex">
-                <a href="catalog.html?category=watch" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-blue);"><i class="ph-fill ph-watch"></i></div></div>
-                    <h3 class="collection-name">WATCH</h3>
-                </a>
-                <a href="catalog.html?category=shoe" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-purple);"><i class="ph-fill ph-sneaker"></i></div></div>
-                    <h3 class="collection-name">SHOE</h3>
-                </a>
-                <a href="catalog.html?category=headphone" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-neon);"><i class="ph-fill ph-headphones"></i></div></div>
-                    <h3 class="collection-name">HEADPHONE</h3>
-                </a>
-                <a href="catalog.html?category=airpods" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-green);"><i class="ph-fill ph-ear"></i></div></div>
-                    <h3 class="collection-name">AIRPODS</h3>
-                </a>
-            </div>
-            <!-- Slider arrows for collections -->
-            <div class="collection-controls">
-                 <button class="control-btn"><i class="ph ph-caret-left"></i></button>
-                 <button class="control-btn"><i class="ph ph-caret-right"></i></button>
-            </div>
-        </section>
-
-        <!-- Explore Products Grid -->
-        <section id="explore" class="section-container reveal">
-            <h2 class="section-title">EXPLORE.</h2>
+        <!-- Catalog Grid -->
+        <section class="section-container reveal" style="padding-top: 2rem; min-height: 60vh;">
+            <h2 class="section-title" id="catalogTitle" style="text-align: center; margin-bottom: 2.5rem; font-size: 2.2rem;">PRODUCTS Collection</h2>
             <div class="product-grid" id="productGrid">
                 <!-- Products injected via renderProducts() in main.js -->
-            </div>
-        </section>
-
-        <!-- Value Propositions -->
-        <section class="features-section reveal">
-            <div class="features-grid">
-                <div class="feature-card">
-                    <i class="ph ph-shield-check"></i>
-                    <h4>Premium First-Copy</h4>
-                    <p>Highest quality clone models available in the market.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="ph ph-currency-inr"></i>
-                    <h4>COD Available</h4>
-                    <p>Pay comfortably when the product arrives at your door.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="ph ph-truck"></i>
-                    <h4>Fast & Free Shipping</h4>
-                    <p>Get your orders delivered to you quickly and safely.</p>
-                </div>
-                <div class="feature-card">
-                    <i class="ph ph-headset"></i>
-                    <h4>Dedicated Support</h4>
-                    <p>Our team is available to assist you with any questions.</p>
-                </div>
             </div>
         </section>
     </main>
@@ -196,8 +120,8 @@
              <div class="footer-col">
                 <h4>QUICK LINKS</h4>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#collections">Products</a></li>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="index.html#collections">Products</a></li>
                     <li><a href="#">Track Order</a></li>
                     <li><a href="#">Contact Us</a></li>
                 </ul>
