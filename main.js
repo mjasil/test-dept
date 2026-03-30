@@ -1,39 +1,39 @@
 /**
  * DEPT STORE | Main Logic
+ * Updated: Firebase Connected
  */
 
 // ============================================================
+//  🔥 FIREBASE CONFIG — PASTE YOUR CONFIG HERE
+// ============================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, query, where }
+    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+// ============================================================
+
+// ============================================================
 //  🎨 SITE ASSETS — CHANGE YOUR IMAGES HERE
-//  Just replace the file paths below with your own images.
-//  Put all image files inside the "assets/images/" folder.
 // ============================================================
 const SITE_ASSETS = {
-
-    // Header logo (appears in navbar)
     logo: "assets/images/logo.png",
-
-    // Hero banner background image
     heroBanner: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80",
-
-    // Collection card images (set to "" to use icon fallback)
     collections: {
-        watch:     "",   // e.g. "assets/images/watch-collection.jpg"
-        shoe:      "",   // e.g. "assets/images/shoe-collection.jpg"
-        headphone: "",   // e.g. "assets/images/headphone-collection.jpg"
-        airpods:   "",   // e.g. "assets/images/airpods-collection.jpg"
-    },
-
-    // Product images — keyed by product ID (set to "" to use icon fallback)
-    // To add an image: place it in assets/images/ and add the path here
-    products: {
-        101: "",   // G-SHOCK CASIOAK BLUE       e.g. "assets/images/gshock.jpg"
-        102: "",   // ROLEX SUBMARINER BLACK      e.g. "assets/images/rolex.jpg"
-        103: "",   // APPLE AIRPODS PRO GEN 2     e.g. "assets/images/airpods.jpg"
-        104: "",   // DIESEL MEGA CHIEF GOLD
-        105: "",   // SMARTWATCH ULTRA 8
-        106: "",   // PATEK PHILIPPE NAUTILUS
-        107: "",   // SAMSUNG GALAXY BUDS
-        108: "",   // HUBLOT BIG BANG CHRONO
+        watch:     "",
+        shoe:      "",
+        headphone: "",
+        airpods:   "",
     }
 };
 // ============================================================
@@ -41,16 +41,7 @@ const SITE_ASSETS = {
 // --- STATE MANAGEMENT ---
 const state = {
     cart: [],
-    products: [
-        { id: 101, name: "G-SHOCK CASIOAK BLUE", originalPrice: 4999, price: 1999, rating: 4.8, category: "watch", imageHolder: "ph-watch", tag: "BEST SELLER" },
-        { id: 102, name: "ROLEX SUBMARINER BLACK", originalPrice: 12000, price: 3499, rating: 5.0, category: "watch", imageHolder: "ph-watch", tag: "PREMIUM" },
-        { id: 103, name: "APPLE AIRPODS PRO GEN 2", originalPrice: 3500, price: 1199, rating: 4.5, category: "airpods", imageHolder: "ph-earbuds", tag: "SALE" },
-        { id: 104, name: "DIESEL MEGA CHIEF GOLD", originalPrice: 8000, price: 2499, rating: 4.6, category: "watch", imageHolder: "ph-watch" },
-        { id: 105, name: "SMARTWATCH ULTRA 8", originalPrice: 2999, price: 999, rating: 4.2, category: "watch", imageHolder: "ph-watch" },
-        { id: 106, name: "NIKE AIR JORDAN 1 HIGH", originalPrice: 15000, price: 4500, rating: 4.9, category: "shoe", imageHolder: "ph-sneaker", tag: "LUXURY" },
-        { id: 107, name: "SONY WH-1000XM5 ANC", originalPrice: 25000, price: 8999, rating: 4.9, category: "headphone", imageHolder: "ph-headphones" },
-        { id: 108, name: "HUBLOT BIG BANG CHRONO", originalPrice: 18000, price: 5999, rating: 4.7, category: "watch", imageHolder: "ph-watch" }
-    ]
+    products: [] // Now loaded from Firebase!
 };
 
 // --- DOM ELEMENTS ---
@@ -69,13 +60,84 @@ const elements = {
 };
 
 // --- INITIALIZATION ---
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     applySiteAssets();
     setupSearch();
-    renderProductDetail();
+    await loadProductsFromFirebase(); // 🔥 Load from Firebase first
     renderProducts();
+    renderProductDetail();
     updateCartUI();
 });
+
+// ============================================================
+//  🔥 FIREBASE — LOAD PRODUCTS
+// ============================================================
+async function loadProductsFromFirebase() {
+    try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoryFilter = urlParams.get('category');
+        const searchFilter = urlParams.get('search');
+
+        let snapshot;
+
+        if (categoryFilter) {
+            // Load only this category
+            const q = query(
+                collection(db, "products"),
+                where("category", "==", categoryFilter.toLowerCase())
+            );
+            snapshot = await getDocs(q);
+        } else {
+            // Load all products
+            snapshot = await getDocs(collection(db, "products"));
+        }
+
+        state.products = [];
+        snapshot.forEach(doc => {
+            state.products.push({ id: doc.id, ...doc.data() });
+        });
+
+        // If search filter, filter locally
+        if (searchFilter) {
+            const q = searchFilter.toLowerCase();
+            state.products = state.products.filter(p =>
+                p.name.toLowerCase().includes(q) ||
+                (p.category && p.category.toLowerCase().includes(q))
+            );
+        }
+
+        console.log("✅ Products loaded from Firebase:", state.products.length);
+
+    } catch (error) {
+        console.error("❌ Firebase load error:", error);
+        // Show error in grid
+        if (elements.productGrid) {
+            elements.productGrid.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
+                    Failed to load products. Please refresh.
+                </div>`;
+        }
+    }
+}
+
+// ============================================================
+//  🔥 FIREBASE — SAVE ORDER
+// ============================================================
+async function saveOrderToFirebase(orderData) {
+    try {
+        const docRef = await addDoc(collection(db, "orders"), {
+            ...orderData,
+            createdAt: new Date(),
+            status: orderData.paymentMethod === "cod" ? "pending" : "confirmed"
+        });
+        console.log("✅ Order saved:", docRef.id);
+        return docRef.id;
+    } catch (error) {
+        console.error("❌ Order save error:", error);
+        throw error;
+    }
+}
+// ============================================================
 
 // --- SEARCH LOGIC ---
 function setupSearch() {
@@ -102,69 +164,69 @@ function setupSearch() {
 
 // --- RENDER PRODUCTS ---
 function renderProducts() {
-    if(!elements.productGrid) return;
-    
-    // Check for category filter in URL
+    if (!elements.productGrid) return;
+
     const urlParams = new URLSearchParams(window.location.search);
     const categoryFilter = urlParams.get('category');
     const searchFilter = urlParams.get('search');
-    
-    let productsToRender = state.products;
-    
-    if (categoryFilter) {
-        productsToRender = state.products.filter(p => p.category === categoryFilter.toLowerCase());
-        const titleEl = document.getElementById('catalogTitle');
-        if (titleEl) {
+
+    // Update page title
+    const titleEl = document.getElementById('catalogTitle');
+    if (titleEl) {
+        if (categoryFilter) {
             titleEl.textContent = categoryFilter.toUpperCase() + " COLLECTION";
-        }
-    } else if (searchFilter) {
-        const q = searchFilter.toLowerCase();
-        productsToRender = state.products.filter(p => 
-            p.name.toLowerCase().includes(q) || 
-            (p.tag && p.tag.toLowerCase().includes(q)) || 
-            (p.category && p.category.toLowerCase().includes(q))
-        );
-        const titleEl = document.getElementById('catalogTitle');
-        if (titleEl) {
+        } else if (searchFilter) {
             titleEl.textContent = `SEARCH RESULTS FOR "${searchFilter.toUpperCase()}"`;
         }
     }
 
-    if(productsToRender.length === 0) {
-        elements.productGrid.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">No products found in this category.</div>`;
+    if (state.products.length === 0) {
+        elements.productGrid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--text-muted);">
+                No products found in this category.
+            </div>`;
         return;
     }
 
-    elements.productGrid.innerHTML = productsToRender.map(product => {
-        const imgSrc = SITE_ASSETS.products[product.id];
-        const imgContent = imgSrc
-            ? `<img src="${imgSrc}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
-            : `<i class="ph ${product.imageHolder}"></i>`;
-        
+    elements.productGrid.innerHTML = state.products.map(product => {
+        // Firebase products use imageURL field
+        const imgContent = product.imageURL
+            ? `<img src="${product.imageURL}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
+            : `<i class="ph ph-watch"></i>`;
+
+        const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+
         return `
         <div class="product-card">
             <a href="product.html?id=${product.id}" style="text-decoration:none; color:inherit; display:block; flex:1">
                 <div class="product-img-wrap">
                     ${imgContent}
                     ${product.tag ? `<span style="position:absolute; top:10px; left:10px; background:var(--accent-black); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">${product.tag}</span>` : ''}
+                    ${product.stock === 0 ? `<span style="position:absolute; top:10px; right:10px; background:#ef4444; color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">OUT OF STOCK</span>` : ''}
                 </div>
-                <div class="product-body" style="padding-bottom: 0;">
+                <div class="product-body" style="padding-bottom:0;">
                     <h3>${product.name}</h3>
+                    ${product.rating ? `
                     <div class="product-rating">
                         ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
-                    </div>
+                    </div>` : ''}
                     <div class="product-price">
-                        <span class="old-price">Rs. ${product.originalPrice}</span>
-                        <span class="new-price">Rs. ${product.price}</span>
+                        ${hasDiscount ? `<span class="old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
+                        <span class="new-price">Rs. ${Number(product.price).toLocaleString()}</span>
                     </div>
                 </div>
             </a>
-            <div class="product-actions" style="padding: 1rem 1.25rem 1.25rem;">
-                <button class="btn btn-outline btn-cart" onclick="addToCart(${product.id})" title="Add to Cart">
+            <div class="product-actions" style="padding:1rem 1.25rem 1.25rem;">
+                <button class="btn btn-outline btn-cart" 
+                    onclick="addToCart('${product.id}')" 
+                    title="Add to Cart"
+                    ${product.stock === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
                     <i class="ph ph-shopping-bag"></i>
                 </button>
-                <button class="btn btn-green btn-buy" onclick="buyNow(${product.id})">
-                    BUY NOW
+                <button class="btn btn-green btn-buy" 
+                    onclick="buyNow('${product.id}')"
+                    ${product.stock === 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}>
+                    ${product.stock === 0 ? 'OUT OF STOCK' : 'BUY NOW'}
                 </button>
             </div>
         </div>`;
@@ -177,7 +239,7 @@ function renderProductDetail() {
     if (!detailArea) return;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const id = parseInt(urlParams.get('id'));
+    const id = urlParams.get('id');
     const product = state.products.find(p => p.id === id);
 
     if (!product) {
@@ -185,10 +247,11 @@ function renderProductDetail() {
         return;
     }
 
-    const imgSrc = SITE_ASSETS.products[product.id];
-    const imgContent = imgSrc 
-        ? `<img src="${imgSrc}" alt="${product.name}">` 
-        : `<i class="ph ${product.imageHolder}"></i>`;
+    const imgContent = product.imageURL
+        ? `<img src="${product.imageURL}" alt="${product.name}">`
+        : `<i class="ph ph-watch"></i>`;
+
+    const hasDiscount = product.originalPrice && product.originalPrice > product.price;
 
     detailArea.innerHTML = `
         <div class="pd-image">
@@ -197,19 +260,21 @@ function renderProductDetail() {
         </div>
         <div class="pd-info">
             <h1 class="pd-title">${product.name}</h1>
+            ${product.rating ? `
             <div class="pd-rating">
                 ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5 - Math.floor(product.rating))} <span>(${product.rating})</span>
-            </div>
+            </div>` : ''}
             <div class="pd-price-wrap">
-                <span class="pd-new-price">Rs. ${product.price}</span>
-                <span class="pd-old-price">Rs. ${product.originalPrice}</span>
+                <span class="pd-new-price">Rs. ${Number(product.price).toLocaleString()}</span>
+                ${hasDiscount ? `<span class="pd-old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
             </div>
-            <p class="pd-desc">
-                Experience the premium quality of the ${product.name}. Carefully crafted for durability and style, providing unmatched comfort and performance for daily use.
+            <p class="pd-desc">${product.description || `Experience the premium quality of the ${product.name}. Carefully crafted for durability and style.`}</p>
+            <p style="color:${product.stock > 0 ? '#4ade80' : '#ef4444'}; font-weight:600; margin-bottom:1rem;">
+                ${product.stock > 0 ? `✓ In Stock (${product.stock} available)` : '✗ Out of Stock'}
             </p>
             <div class="pd-actions">
-                <button class="btn btn-green" onclick="buyNow(${product.id})">BUY NOW</button>
-                <button class="btn btn-outline" onclick="addToCart(${product.id})"><i class="ph ph-shopping-bag"></i> Add to Cart</button>
+                <button class="btn btn-green" onclick="buyNow('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}>BUY NOW</button>
+                <button class="btn btn-outline" onclick="addToCart('${product.id}')" ${product.stock === 0 ? 'disabled' : ''}><i class="ph ph-shopping-bag"></i> Add to Cart</button>
             </div>
         </div>
     `;
@@ -217,25 +282,22 @@ function renderProductDetail() {
 
 // --- APPLY SITE ASSETS ---
 function applySiteAssets() {
-    // Logo
     const logoImg = document.querySelector('.brand-logo img');
-    if(logoImg && SITE_ASSETS.logo) logoImg.src = SITE_ASSETS.logo;
+    if (logoImg && SITE_ASSETS.logo) logoImg.src = SITE_ASSETS.logo;
 
-    // Hero banner
     const bannerEl = document.querySelector('.banner-image');
-    if(bannerEl && SITE_ASSETS.heroBanner) {
+    if (bannerEl && SITE_ASSETS.heroBanner) {
         bannerEl.style.backgroundImage = `url('${SITE_ASSETS.heroBanner}')`;
     }
 
-    // Collection images
     const collectionCards = document.querySelectorAll('.collection-card');
     const collectionKeys = ['watch', 'shoe', 'headphone', 'airpods'];
     collectionCards.forEach((card, i) => {
         const key = collectionKeys[i];
         const src = SITE_ASSETS.collections[key];
-        if(src) {
+        if (src) {
             const placeholder = card.querySelector('.img-placeholder');
-            if(placeholder) {
+            if (placeholder) {
                 placeholder.innerHTML = '';
                 placeholder.style.cssText = '';
                 placeholder.style.backgroundImage = `url('${src}')`;
@@ -246,27 +308,29 @@ function applySiteAssets() {
     });
 }
 
-
 // --- MOBILE MENU ---
 window.toggleMobileMenu = () => {
     document.body.classList.toggle('mobile-menu-active');
 };
 
-
 // --- CART LOGIC ---
 window.addToCart = (productId, silent = false) => {
     const product = state.products.find(p => p.id === productId);
-    if(!product) return;
+    if (!product) return;
+    if (product.stock === 0) {
+        alert("Sorry, this product is out of stock!");
+        return;
+    }
 
     const existing = state.cart.find(item => item.id === productId);
-    if(existing) {
+    if (existing) {
         existing.quantity += 1;
     } else {
         state.cart.push({ ...product, quantity: 1 });
     }
-    
+
     updateCartUI();
-    if(!silent) toggleCart(true); // Open cart automatically
+    if (!silent) toggleCart(true);
 };
 
 window.removeFromCart = (productId) => {
@@ -276,10 +340,10 @@ window.removeFromCart = (productId) => {
 
 window.updateQuantity = (productId, delta) => {
     const item = state.cart.find(i => i.id === productId);
-    if(!item) return;
-    
+    if (!item) return;
+
     item.quantity += delta;
-    if(item.quantity <= 0) {
+    if (item.quantity <= 0) {
         removeFromCart(productId);
     } else {
         updateCartUI();
@@ -287,69 +351,67 @@ window.updateQuantity = (productId, delta) => {
 };
 
 window.toggleCart = (forceOpen = null) => {
-    if(forceOpen === true) document.body.classList.add('cart-active');
-    else if(forceOpen === false) document.body.classList.remove('cart-active');
+    if (forceOpen === true) document.body.classList.add('cart-active');
+    else if (forceOpen === false) document.body.classList.remove('cart-active');
     else document.body.classList.toggle('cart-active');
 };
 
 function updateCartUI() {
-    // Totals
     const totalItems = state.cart.reduce((sum, item) => sum + item.quantity, 0);
     const totalPrice = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    // Badge Update
-    if(elements.cartBadge) elements.cartBadge.textContent = totalItems;
-    
-    // Sidebar Prices
-    if(elements.cartSubtotal) elements.cartSubtotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
-    if(elements.cartTotal) elements.cartTotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
 
-    // Render HTML Items in Sidebar
-    if(!elements.cartItemsContainer) return;
-    
-    if(state.cart.length === 0) {
+    if (elements.cartBadge) elements.cartBadge.textContent = totalItems;
+    if (elements.cartSubtotal) elements.cartSubtotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
+    if (elements.cartTotal) elements.cartTotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
+
+    if (!elements.cartItemsContainer) return;
+
+    if (state.cart.length === 0) {
         elements.cartItemsContainer.innerHTML = `<div class="empty-cart-message">Your cart is currently empty.</div>`;
         return;
     }
 
     elements.cartItemsContainer.innerHTML = state.cart.map(item => `
         <div class="cart-item">
-            <div class="cart-item-img"><i class="ph ${item.imageHolder}"></i></div>
+            <div class="cart-item-img">
+                ${item.imageURL 
+                    ? `<img src="${item.imageURL}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">` 
+                    : `<i class="ph ph-watch"></i>`}
+            </div>
             <div class="cart-item-details">
                 <div class="cart-item-title">${item.name}</div>
-                <div class="cart-item-price">Rs. ${item.price.toLocaleString()}</div>
-                <div style="display: flex; justify-content: space-between; align-items: flex-end; width:100%;">
+                <div class="cart-item-price">Rs. ${Number(item.price).toLocaleString()}</div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; width:100%;">
                     <div class="cart-qty-ctrl">
-                        <button onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <button onclick="updateQuantity('${item.id}', -1)">-</button>
                         <span>${item.quantity}</span>
-                        <button onclick="updateQuantity(${item.id}, 1)">+</button>
+                        <button onclick="updateQuantity('${item.id}', 1)">+</button>
                     </div>
-                    <button class="icon-btn" style="color:var(--text-muted); font-size:1.2rem" onclick="removeFromCart(${item.id})"><i class="ph ph-trash"></i></button>
+                    <button class="icon-btn" style="color:var(--text-muted); font-size:1.2rem" onclick="removeFromCart('${item.id}')">
+                        <i class="ph ph-trash"></i>
+                    </button>
                 </div>
             </div>
         </div>
     `).join('');
 }
 
-
-// --- CHECKOUT & BUY NOW LOGIC ---
+// --- CHECKOUT & BUY NOW ---
 window.buyNow = (productId) => {
-    // Clear cart and add only this item
     state.cart = [];
-    addToCart(productId, true); // add silently
+    addToCart(productId, true);
     openCheckout();
 };
 
 window.openCheckout = () => {
-    if(state.cart.length === 0) {
+    if (state.cart.length === 0) {
         alert("Your cart is empty!");
         return;
     }
-    toggleCart(false); // Close sidebar
+    toggleCart(false);
     document.body.classList.add('checkout-active');
     renderCheckoutSummary();
-    
-    // Reset Form and Messages
+
     elements.checkoutFeedback.className = 'feedback-msg';
     elements.checkoutFeedback.style.display = 'none';
     document.getElementById('checkoutForm').reset();
@@ -361,16 +423,16 @@ window.closeCheckout = () => {
 
 function renderCheckoutSummary() {
     const totalPrice = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    
-    if(elements.summarySubtotal) elements.summarySubtotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
-    if(elements.summaryTotal) elements.summaryTotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
-    
-    if(elements.summaryItemsContainer) {
+
+    if (elements.summarySubtotal) elements.summarySubtotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
+    if (elements.summaryTotal) elements.summaryTotal.textContent = `Rs. ${totalPrice.toLocaleString()}`;
+
+    if (elements.summaryItemsContainer) {
         elements.summaryItemsContainer.innerHTML = state.cart.map(item => `
             <div class="summary-item">
                 <div style="flex:1;">
                     <span style="font-weight:600">${item.name}</span>
-                    <span style="color:var(--text-muted); font-size:0.85rem">x ${item.quantity}</span>
+                    <span style="color:var(--text-muted); font-size:0.85rem"> x${item.quantity}</span>
                 </div>
                 <strong>Rs. ${(item.price * item.quantity).toLocaleString()}</strong>
             </div>
@@ -378,79 +440,132 @@ function renderCheckoutSummary() {
     }
 }
 
-// Payment Selection Styling
 window.selectPayment = (type) => {
     document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
-    
-    const cardOptions = {
-        'online': 'payOnline',
-        'cod': 'payCod'
-    };
-    
-    const radioId = cardOptions[type];
-    const radio = document.getElementById(radioId);
-    
-    if(radio) {
+    const cardOptions = { 'online': 'payOnline', 'cod': 'payCod' };
+    const radio = document.getElementById(cardOptions[type]);
+    if (radio) {
         radio.checked = true;
         radio.closest('.payment-card').classList.add('active');
     }
 };
 
-window.submitOrder = () => {
-    const name = document.getElementById('chkName').value;
-    const phone = document.getElementById('chkPhone').value;
-    const altPhone = document.getElementById('chkAltPhone').value;
-    const address = document.getElementById('chkAddress').value;
-    const size = document.getElementById('chkSize'); // Newly added Size element
+// ============================================================
+//  🔥 SUBMIT ORDER — Saves to Firebase
+// ============================================================
+window.submitOrder = async () => {
+    const name = document.getElementById('chkName').value.trim();
+    const phone = document.getElementById('chkPhone').value.trim();
+    const altPhone = document.getElementById('chkAltPhone').value.trim();
+    const address = document.getElementById('chkAddress').value.trim();
+    const size = document.getElementById('chkSize');
     const sizeVal = size && size.value ? size.value : 'N/A';
-    const pin = document.getElementById('chkPin').value;
-    const city = document.getElementById('chkCity').value;
-    const stateVal = document.getElementById('chkState').value;
-    const landmark = document.getElementById('chkLandmark').value;
-    const insta = document.getElementById('chkInsta').value;
+    const pin = document.getElementById('chkPin').value.trim();
+    const city = document.getElementById('chkCity').value.trim();
+    const stateVal = document.getElementById('chkState').value.trim();
+    const landmark = document.getElementById('chkLandmark').value.trim();
+    const insta = document.getElementById('chkInsta').value.trim();
     const paymentRadio = document.querySelector('input[name="paymentMethod"]:checked');
     const btn = document.querySelector('.place-order-btn');
 
-    if(!paymentRadio) {
+    if (!paymentRadio) {
         alert("Please select a payment method.");
         return;
     }
 
     const paymentMethod = paymentRadio.value;
+    const totalPrice = state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-    // Simulate Network Request
-    btn.innerHTML = `<i class="ph-bold ph-spinner" style="animation: spin 1s linear infinite;"></i> Processing...`;
+    // Build order items list
+    const items = state.cart.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+        total: item.price * item.quantity
+    }));
+
+    // Show loading
+    btn.innerHTML = `<i class="ph-bold ph-spinner" style="animation:spin 1s linear infinite;"></i> Processing...`;
     btn.disabled = true;
 
-    setTimeout(() => {
-        elements.checkoutFeedback.style.display = 'block';
-        
-        if(paymentMethod === 'online') {
+    try {
+        if (paymentMethod === 'online') {
+            // 🔥 TODO: Razorpay integration comes here later
+            // For now show message
+            elements.checkoutFeedback.style.display = 'block';
             elements.checkoutFeedback.className = 'feedback-msg feedback-success';
-            elements.checkoutFeedback.innerHTML = `Redirecting to secure payment gateway for ${name}...`;
-            
-            // Further mock simulation
+            elements.checkoutFeedback.innerHTML = `Redirecting to payment gateway...`;
+
+            // Save order to Firebase
+            const orderId = await saveOrderToFirebase({
+                customerName: name,
+                customerPhone: phone,
+                customerAltPhone: altPhone,
+                customerAddress: address,
+                customerSize: sizeVal,
+                customerPin: pin,
+                customerCity: city,
+                customerState: stateVal,
+                customerLandmark: landmark,
+                customerInsta: insta,
+                items,
+                total: totalPrice,
+                paymentMethod: "online",
+                paymentId: "PENDING", // Will be updated by Razorpay later
+            });
+
             setTimeout(() => {
-                alert(`Order Success! Thanks ${name}. Payment verified!`);
+                alert(`✅ Order placed! Order ID: ${orderId}\nWe'll contact you on ${phone} to confirm payment.`);
                 completeOrderFlow();
             }, 1500);
-            
+
         } else {
-            // COD
+            // COD — Save directly to Firebase
+            elements.checkoutFeedback.style.display = 'block';
             elements.checkoutFeedback.className = 'feedback-msg feedback-success';
-            elements.checkoutFeedback.innerHTML = `Order completely placed via COD. We'll verify you on ${phone}.`;
+            elements.checkoutFeedback.innerHTML = `Placing your COD order...`;
+
+            const orderId = await saveOrderToFirebase({
+                customerName: name,
+                customerPhone: phone,
+                customerAltPhone: altPhone,
+                customerAddress: address,
+                customerSize: sizeVal,
+                customerPin: pin,
+                customerCity: city,
+                customerState: stateVal,
+                customerLandmark: landmark,
+                customerInsta: insta,
+                items,
+                total: totalPrice,
+                paymentMethod: "cod",
+                paymentId: "COD",
+            });
+
             setTimeout(() => {
+                alert(`✅ Order placed successfully!\nOrder ID: ${orderId}\nWe'll call you on ${phone} to confirm delivery.`);
                 completeOrderFlow();
-            }, 2000);
+            }, 1500);
         }
-    }, 1500);
+
+    } catch (error) {
+        elements.checkoutFeedback.style.display = 'block';
+        elements.checkoutFeedback.className = 'feedback-msg feedback-error';
+        elements.checkoutFeedback.innerHTML = `❌ Something went wrong. Please try again.`;
+        btn.innerHTML = `PLACE ORDER <i class="ph-bold ph-lightning"></i>`;
+        btn.disabled = false;
+    }
 };
+// ============================================================
 
 function completeOrderFlow() {
     state.cart = [];
     updateCartUI();
     closeCheckout();
     const btn = document.querySelector('.place-order-btn');
-    btn.innerHTML = `PLACE ORDER <i class="ph-bold ph-lightning"></i>`;
-    btn.disabled = false;
+    if (btn) {
+        btn.innerHTML = `PLACE ORDER <i class="ph-bold ph-lightning"></i>`;
+        btn.disabled = false;
+    }
 }
