@@ -1,6 +1,42 @@
 /**
- * DEPT STORE | Traft.in Clone Logic
+ * DEPT STORE | Main Logic
  */
+
+// ============================================================
+//  🎨 SITE ASSETS — CHANGE YOUR IMAGES HERE
+//  Just replace the file paths below with your own images.
+//  Put all image files inside the "assets/images/" folder.
+// ============================================================
+const SITE_ASSETS = {
+
+    // Header logo (appears in navbar)
+    logo: "assets/images/logo.png",
+
+    // Hero banner background image
+    heroBanner: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80",
+
+    // Collection card images (set to "" to use icon fallback)
+    collections: {
+        watch:     "",   // e.g. "assets/images/watch-collection.jpg"
+        shoe:      "",   // e.g. "assets/images/shoe-collection.jpg"
+        headphone: "",   // e.g. "assets/images/headphone-collection.jpg"
+        airpods:   "",   // e.g. "assets/images/airpods-collection.jpg"
+    },
+
+    // Product images — keyed by product ID (set to "" to use icon fallback)
+    // To add an image: place it in assets/images/ and add the path here
+    products: {
+        101: "",   // G-SHOCK CASIOAK BLUE       e.g. "assets/images/gshock.jpg"
+        102: "",   // ROLEX SUBMARINER BLACK      e.g. "assets/images/rolex.jpg"
+        103: "",   // APPLE AIRPODS PRO GEN 2     e.g. "assets/images/airpods.jpg"
+        104: "",   // DIESEL MEGA CHIEF GOLD
+        105: "",   // SMARTWATCH ULTRA 8
+        106: "",   // PATEK PHILIPPE NAUTILUS
+        107: "",   // SAMSUNG GALAXY BUDS
+        108: "",   // HUBLOT BIG BANG CHRONO
+    }
+};
+// ============================================================
 
 // --- STATE MANAGEMENT ---
 const state = {
@@ -34,6 +70,7 @@ const elements = {
 
 // --- INITIALIZATION ---
 document.addEventListener('DOMContentLoaded', () => {
+    applySiteAssets();
     renderProducts();
     updateCartUI();
 });
@@ -42,10 +79,16 @@ document.addEventListener('DOMContentLoaded', () => {
 function renderProducts() {
     if(!elements.productGrid) return;
 
-    elements.productGrid.innerHTML = state.products.map(product => `
+    elements.productGrid.innerHTML = state.products.map(product => {
+        const imgSrc = SITE_ASSETS.products[product.id];
+        const imgContent = imgSrc
+            ? `<img src="${imgSrc}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;">`
+            : `<i class="ph ${product.imageHolder}"></i>`;
+        
+        return `
         <div class="product-card">
             <div class="product-img-wrap">
-                <i class="ph ${product.imageHolder}"></i>
+                ${imgContent}
                 ${product.tag ? `<span style="position:absolute; top:10px; left:10px; background:var(--accent-black); color:#fff; font-size:0.7rem; font-weight:700; padding:4px 8px; border-radius:4px;">${product.tag}</span>` : ''}
             </div>
             <div class="product-body">
@@ -66,8 +109,39 @@ function renderProducts() {
                     </button>
                 </div>
             </div>
-        </div>
-    `).join('');
+        </div>`;
+    }).join('');
+}
+
+// --- APPLY SITE ASSETS ---
+function applySiteAssets() {
+    // Logo
+    const logoImg = document.querySelector('.brand-logo img');
+    if(logoImg && SITE_ASSETS.logo) logoImg.src = SITE_ASSETS.logo;
+
+    // Hero banner
+    const bannerEl = document.querySelector('.banner-image');
+    if(bannerEl && SITE_ASSETS.heroBanner) {
+        bannerEl.style.backgroundImage = `url('${SITE_ASSETS.heroBanner}')`;
+    }
+
+    // Collection images
+    const collectionCards = document.querySelectorAll('.collection-card');
+    const collectionKeys = ['watch', 'shoe', 'headphone', 'airpods'];
+    collectionCards.forEach((card, i) => {
+        const key = collectionKeys[i];
+        const src = SITE_ASSETS.collections[key];
+        if(src) {
+            const placeholder = card.querySelector('.img-placeholder');
+            if(placeholder) {
+                placeholder.innerHTML = '';
+                placeholder.style.cssText = '';
+                placeholder.style.backgroundImage = `url('${src}')`;
+                placeholder.style.backgroundSize = 'cover';
+                placeholder.style.backgroundPosition = 'center';
+            }
+        }
+    });
 }
 
 
