@@ -3,30 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DEPT STORE | Premium Watches & Gadgets</title>
+    <title>DEPT STORE | Product</title>
     <meta name="description" content="Shop the finest quality first-copy and premium tech. Cash on delivery available.">
-    
-    <!-- Fonts - Using Inter to mimic Traft's clean sans-serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons (Phosphor Icons - clean lines) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Animated Background Glow -->
     <div class="bg-glow">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
 
-    <!-- Announcement Bar -->
     <div class="announcement-bar">
         <div class="marquee-content">
             <i class="ph-bold ph-lightning"></i> Quality Products at Best Price.
@@ -35,21 +27,17 @@
         </div>
     </div>
 
-    <!-- Main Navigation -->
     <header class="header" id="mainHeader">
         <div class="header-container">
             <div class="header-left">
-                <!-- Hamburger for Mobile -->
                 <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
                     <i class="ph ph-list"></i>
                 </button>
                 <a href="index.html" class="brand-logo">
-                    <!-- Text Logo if image fails -->
                     <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <span class="logo-text" style="display:none;">DEPT. <span>STORE</span></span>
                 </a>
             </div>
-
             <div class="header-center">
                 <div class="search-bar">
                     <i class="ph ph-magnifying-glass search-icon"></i>
@@ -57,7 +45,6 @@
                     <button class="btn btn-black search-btn">Search</button>
                 </div>
             </div>
-
             <nav class="header-right nav-links">
                 <a href="index.html">Home</a>
                 <a href="terms.html">Terms</a>
@@ -68,8 +55,6 @@
                 </button>
             </nav>
         </div>
-        
-        <!-- Mobile Search Bar (Visible only on mobile) -->
         <div class="mobile-search">
             <div class="search-bar">
                 <i class="ph ph-magnifying-glass search-icon"></i>
@@ -78,7 +63,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation Overlay (Hidden by default) -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu-drawer" id="mobileMenuDrawer">
         <div class="mobile-menu-header">
@@ -87,36 +71,40 @@
         </div>
         <ul class="mobile-nav-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#collections">Our Collections</a></li>
-            <li><a href="#explore">Explore Products</a></li>
+            <li><a href="index.html#collections">Our Collections</a></li>
             <li><a href="terms.html">Terms & Conditions</a></li>
             <li><a href="#">Track Order</a></li>
         </ul>
     </div>
 
-    <!-- Main Content -->
     <main>
-        <!-- Product Details -->
         <section class="section-container reveal" style="padding-top: 2rem; min-height: 60vh;">
-            <div class="product-detail-area" id="productDetailArea">
-                <!-- Data injected by main.js renderProductDetail() -->
+            
+            <!-- Loading State -->
+            <div id="productLoading" style="text-align:center; padding:4rem; color:#888;">
+                <i class="ph ph-spinner" style="font-size:2rem;"></i>
+                <p style="margin-top:1rem;">Loading product...</p>
             </div>
+
+            <!-- Product Detail Area — filled by JS -->
+            <div class="product-detail-area" id="productDetailArea" style="display:none;">
+            </div>
+
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-col">
                 <a href="index.html" class="footer-logo">DEPT. <span>STORE</span></a>
                 <p class="footer-desc">Since 2023, a Kerala (Kannur) based online store. Your premium destination for luxury timepieces and cutting-edge tech gadgets.</p>
                 <div class="social-links">
-                    <a href="https://www.instagram.com/deptstore.official?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D" target="_blank"><i class="ph ph-instagram-logo"></i></a>
+                    <a href="https://www.instagram.com/deptstore.official" target="_blank"><i class="ph ph-instagram-logo"></i></a>
                     <a href="https://wa.me/918281097861" target="_blank"><i class="ph ph-whatsapp-logo"></i></a>
                     <a href="#"><i class="ph ph-facebook-logo"></i></a>
                 </div>
             </div>
-             <div class="footer-col">
+            <div class="footer-col">
                 <h4>QUICK LINKS</h4>
                 <ul>
                     <li><a href="index.html">Home</a></li>
@@ -139,18 +127,14 @@
         </div>
     </footer>
 
-
-    <!-- Cart & Checkout System Overlay -->
     <div class="sliding-panel-overlay" id="cartOverlay"></div>
 
-    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
              <h2>CART</h2>
              <button class="icon-btn" onclick="toggleCart()"><i class="ph ph-x"></i></button>
         </div>
         <div class="cart-body" id="cartItemsContainer">
-             <!-- Cart Items -->
              <div class="empty-cart-message">Your cart is currently empty.</div>
         </div>
         <div class="cart-footer">
@@ -164,19 +148,15 @@
         </div>
     </div>
 
-    <!-- Multi-Step Checkout Modal -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-container">
             <div class="checkout-header">
                 <h2>Checkout</h2>
                 <button class="icon-btn" onclick="closeCheckout()"><i class="ph ph-x"></i></button>
             </div>
-            
             <div class="checkout-content">
-                <!-- Left: Form -->
                 <div class="checkout-form-area">
                     <form id="checkoutForm" onsubmit="event.preventDefault(); submitOrder();">
-                        
                         <div class="form-section">
                             <h3>1. Shipping Information</h3>
                             <div class="form-grid">
@@ -222,7 +202,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <div class="form-section">
                             <h3>2. Payment Method</h3>
                             <div class="payment-options">
@@ -243,21 +222,15 @@
                                 </div>
                             </div>
                         </div>
-                        
                         <div id="checkoutFeedback" class="feedback-msg"></div>
-
                         <button type="submit" class="btn btn-green w-full place-order-btn">
                             PLACE ORDER <i class="ph-bold ph-lightning"></i>
                         </button>
                     </form>
                 </div>
-
-                <!-- Right: Summary -->
                 <div class="checkout-summary-area">
                     <h3>Order Summary</h3>
-                    <div class="summary-items" id="summaryItemsContainer">
-                        <!-- Filled by JS -->
-                    </div>
+                    <div class="summary-items" id="summaryItemsContainer"></div>
                     <div class="summary-totals">
                        <div class="total-row"><span>Subtotal:</span> <span id="summarySubtotal">Rs. 0</span></div>
                        <div class="total-row"><span>Shipping:</span> <span class="free-text">FREE</span></div>
@@ -268,22 +241,18 @@
         </div>
     </div>
 
-
-    <!-- Floating WhatsApp Fixed Button -->
     <a href="https://wa.me/918281097861" target="_blank" class="floating-whatsapp">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
-    <!-- Custom JS Application Logic -->
-    <script src="main.js"></script>
+    <!-- ✅ type="module" so Firebase works -->
+    <script type="module" src="main.js"></script>
+
     <script>
-        // Header scroll glow
         window.addEventListener('scroll', () => {
             const h = document.getElementById('mainHeader');
             if(h) h.classList.toggle('scrolled', window.scrollY > 40);
         });
-
-        // Scroll reveal — sections
         const sectionObs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
                 if(e.isIntersecting) {
@@ -293,29 +262,6 @@
             });
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => sectionObs.observe(el));
-
-        // Staggered card reveal — product cards, feature cards, collection cards
-        const cardObs = new IntersectionObserver((entries) => {
-            entries.forEach((e, i) => {
-                if(e.isIntersecting) {
-                    const delay = Array.from(e.target.parentElement.children).indexOf(e.target) * 80;
-                    setTimeout(() => e.target.classList.add('card-visible'), delay);
-                    cardObs.unobserve(e.target);
-                }
-            });
-        }, { threshold: 0.05 });
-
-        // Observe after products are rendered
-        const waitForCards = setInterval(() => {
-            const cards = document.querySelectorAll('.product-card, .feature-card, .collection-card');
-            if(cards.length > 0) {
-                clearInterval(waitForCards);
-                cards.forEach(c => {
-                    c.classList.add('card-reveal');
-                    cardObs.observe(c);
-                });
-            }
-        }, 100);
     </script>
 </body>
 </html>
