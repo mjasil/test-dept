@@ -5,51 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DEPT STORE | Premium Watches & Gadgets</title>
     <meta name="description" content="Shop the finest quality first-copy and premium tech. Cash on delivery available.">
-    
-    <!-- Fonts - Using Inter to mimic Traft's clean sans-serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons (Phosphor Icons - clean lines) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Animated Background Glow -->
     <div class="bg-glow">
         <div class="orb orb-1"></div>
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
 
-    <!-- Announcement Bar -->
     <div class="announcement-bar">
         <div class="marquee-content">
             <i class="ph-bold ph-lightning"></i> Quality Products at Best Price.
             <i class="ph-bold ph-truck"></i> Welcome To Dept Store.
+            <i class="ph-bold ph-star"></i> Free Shipping on All Orders.
             <i class="ph-bold ph-lightning"></i> Quality Products at Best Price.
         </div>
     </div>
 
-    <!-- Main Navigation -->
     <header class="header" id="mainHeader">
         <div class="header-container">
             <div class="header-left">
-                <!-- Hamburger for Mobile -->
                 <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
                     <i class="ph ph-list"></i>
                 </button>
                 <a href="index.html" class="brand-logo">
-                    <!-- Text Logo if image fails -->
                     <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                     <span class="logo-text" style="display:none;">DEPT. <span>STORE</span></span>
                 </a>
             </div>
-
             <div class="header-center">
                 <div class="search-bar">
                     <i class="ph ph-magnifying-glass search-icon"></i>
@@ -57,7 +46,6 @@
                     <button class="btn btn-black search-btn">Search</button>
                 </div>
             </div>
-
             <nav class="header-right nav-links">
                 <a href="#" class="active">Home</a>
                 <a href="terms.html">Terms</a>
@@ -68,8 +56,6 @@
                 </button>
             </nav>
         </div>
-        
-        <!-- Mobile Search Bar (Visible only on mobile) -->
         <div class="mobile-search">
             <div class="search-bar">
                 <i class="ph ph-magnifying-glass search-icon"></i>
@@ -78,7 +64,6 @@
         </div>
     </header>
 
-    <!-- Mobile Navigation Overlay (Hidden by default) -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
     <div class="mobile-menu-drawer" id="mobileMenuDrawer">
         <div class="mobile-menu-header">
@@ -88,27 +73,25 @@
         <ul class="mobile-nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#collections">Our Collections</a></li>
-            <li><a href="#explore">Explore Products</a></li>
+            <li><a href="#trending">Trending Now</a></li>
             <li><a href="terms.html">Terms & Conditions</a></li>
             <li><a href="#">Track Order</a></li>
         </ul>
     </div>
 
-    <!-- Main Content -->
     <main>
-        <!-- Hero Banner Section -->
+        <!-- Hero Banner -->
         <section class="hero-banner reveal">
             <div class="banner-container">
-                <!-- A placeholder grey box simulating the large image slider on Traft -->
                 <div class="banner-image">
-                     <div class="banner-text-overlay">
-                        <h2>LOVED BY <span>30K+</span> CUSTOMERS</h2>
+                    <div class="banner-text-overlay">
+                        <!-- UPDATED: 25K+ -->
+                        <h2>LOVED BY <span>25K+</span> CUSTOMERS</h2>
                         <div class="quality-badge">
                             <i class="ph-fill ph-check-circle"></i> BEST QUALITY
                         </div>
-                     </div>
+                    </div>
                 </div>
-                <!-- Banner Slider Controls -->
                 <button class="slider-btn prev-btn"><i class="ph ph-caret-left"></i></button>
                 <button class="slider-btn next-btn"><i class="ph ph-caret-right"></i></button>
                 <div class="slider-dots">
@@ -118,39 +101,59 @@
             </div>
         </section>
 
-        <!-- Our Collections -->
+        <!-- UPDATED COLLECTIONS -->
         <section id="collections" class="section-container reveal">
             <h2 class="section-title">OUR COLLECTIONS.</h2>
             <div class="collections-flex">
-                <a href="catalog.html?category=watch" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-blue);"><i class="ph-fill ph-watch"></i></div></div>
-                    <h3 class="collection-name">WATCH</h3>
+                <a href="catalog.html?category=ladies-watch" class="collection-card" style="text-decoration:none;">
+                    <div class="collection-img-wrap">
+                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-purple);">
+                            <i class="ph-fill ph-watch"></i>
+                        </div>
+                    </div>
+                    <h3 class="collection-name">LADIES WATCH</h3>
                 </a>
-                <a href="catalog.html?category=shoe" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-purple);"><i class="ph-fill ph-sneaker"></i></div></div>
-                    <h3 class="collection-name">SHOE</h3>
+                <a href="catalog.html?category=mens-watch" class="collection-card" style="text-decoration:none;">
+                    <div class="collection-img-wrap">
+                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-blue);">
+                            <i class="ph-fill ph-watch"></i>
+                        </div>
+                    </div>
+                    <h3 class="collection-name">MENS WATCH</h3>
                 </a>
-                <a href="catalog.html?category=headphone" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-neon);"><i class="ph-fill ph-headphones"></i></div></div>
-                    <h3 class="collection-name">HEADPHONE</h3>
+                <a href="catalog.html?category=gadgets" class="collection-card" style="text-decoration:none;">
+                    <div class="collection-img-wrap">
+                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-neon);">
+                            <i class="ph-fill ph-device-mobile"></i>
+                        </div>
+                    </div>
+                    <h3 class="collection-name">GADGETS</h3>
                 </a>
-                <a href="catalog.html?category=airpods" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap"><div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-green);"><i class="ph-fill ph-ear"></i></div></div>
-                    <h3 class="collection-name">AIRPODS</h3>
+                <!-- ALL PRODUCTS -->
+                <a href="catalog.html?category=all" class="collection-card" style="text-decoration:none;">
+                    <div class="collection-img-wrap">
+                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-green);">
+                            <i class="ph-fill ph-storefront"></i>
+                        </div>
+                    </div>
+                    <h3 class="collection-name">SHOP ALL</h3>
                 </a>
             </div>
-            <!-- Slider arrows for collections -->
             <div class="collection-controls">
-                 <button class="control-btn"><i class="ph ph-caret-left"></i></button>
-                 <button class="control-btn"><i class="ph ph-caret-right"></i></button>
+                <button class="control-btn"><i class="ph ph-caret-left"></i></button>
+                <button class="control-btn"><i class="ph ph-caret-right"></i></button>
             </div>
         </section>
 
-        <!-- Explore Products Grid -->
-        <section id="explore" class="section-container reveal">
-            <h2 class="section-title">EXPLORE.</h2>
-            <div class="product-grid" id="productGrid">
-                <!-- Products injected via renderProducts() in main.js -->
+        <!-- TRENDING PRODUCTS (manually selected by admin) -->
+        <section id="trending" class="section-container reveal">
+            <h2 class="section-title">🔥 TRENDING NOW.</h2>
+            <p style="color:#888;margin-top:-1rem;margin-bottom:2rem;font-size:0.9rem;">Hand-picked by our team</p>
+            <div class="product-grid" id="trendingGrid">
+                <div style="grid-column:1/-1;text-align:center;padding:2rem;color:#888;">
+                    <i class="ph ph-spinner" style="font-size:2rem;animation:spin 1s linear infinite;"></i>
+                    <p style="margin-top:1rem;">Loading trending products...</p>
+                </div>
             </div>
         </section>
 
@@ -158,22 +161,22 @@
         <section class="features-section reveal">
             <div class="features-grid">
                 <div class="feature-card">
-                    <i class="ph ph-shield-check"></i>
+                    <div class="feature-icon"><i class="ph-fill ph-seal-check"></i></div>
                     <h4>Premium First-Copy</h4>
                     <p>Highest quality clone models available in the market.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="ph ph-currency-inr"></i>
+                    <div class="feature-icon"><i class="ph-fill ph-package"></i></div>
                     <h4>COD Available</h4>
                     <p>Pay comfortably when the product arrives at your door.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="ph ph-truck"></i>
+                    <div class="feature-icon"><i class="ph-fill ph-truck"></i></div>
                     <h4>Fast & Free Shipping</h4>
                     <p>Get your orders delivered to you quickly and safely.</p>
                 </div>
                 <div class="feature-card">
-                    <i class="ph ph-headset"></i>
+                    <div class="feature-icon"><i class="ph-fill ph-headset"></i></div>
                     <h4>Dedicated Support</h4>
                     <p>Our team is available to assist you with any questions.</p>
                 </div>
@@ -181,7 +184,6 @@
         </section>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-col">
@@ -193,13 +195,13 @@
                     <a href="#"><i class="ph ph-facebook-logo"></i></a>
                 </div>
             </div>
-             <div class="footer-col">
-                <h4>QUICK LINKS</h4>
+            <div class="footer-col">
+                <h4>COLLECTIONS</h4>
                 <ul>
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#collections">Products</a></li>
-                    <li><a href="#">Track Order</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="catalog.html?category=ladies-watch">Ladies Watch</a></li>
+                    <li><a href="catalog.html?category=mens-watch">Mens Watch</a></li>
+                    <li><a href="catalog.html?category=gadgets">Gadgets</a></li>
+                    <li><a href="catalog.html?category=all">Shop All</a></li>
                 </ul>
             </div>
             <div class="footer-col">
@@ -216,44 +218,36 @@
         </div>
     </footer>
 
-
-    <!-- Cart & Checkout System Overlay -->
     <div class="sliding-panel-overlay" id="cartOverlay"></div>
-
-    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
-             <h2>CART</h2>
-             <button class="icon-btn" onclick="toggleCart()"><i class="ph ph-x"></i></button>
+            <h2>CART</h2>
+            <button class="icon-btn" onclick="toggleCart()"><i class="ph ph-x"></i></button>
         </div>
         <div class="cart-body" id="cartItemsContainer">
-             <!-- Cart Items -->
-             <div class="empty-cart-message">Your cart is currently empty.</div>
+            <div class="empty-cart-message">Your cart is currently empty.</div>
         </div>
         <div class="cart-footer">
-             <div class="cart-totals">
-                 <div class="total-row"><span>Subtotal:</span> <span id="cartSubtotal">Rs. 0</span></div>
-                 <div class="total-row"><span>Shipping:</span> <span class="free-text">FREE</span></div>
-                 <div class="total-row grand-total"><span>Total:</span> <strong id="cartTotal">Rs. 0</strong></div>
-             </div>
-             <button class="btn btn-black w-full" onclick="openCheckout()">PROCEED TO CHECKOUT</button>
-             <button class="btn btn-outline w-full mt-2" onclick="toggleCart()">CONTINUE SHOPPING</button>
+            <div class="cart-totals">
+                <div class="total-row"><span>Subtotal:</span> <span id="cartSubtotal">Rs. 0</span></div>
+                <div class="total-row"><span>Shipping:</span> <span class="free-text">FREE</span></div>
+                <div class="total-row grand-total"><span>Total:</span> <strong id="cartTotal">Rs. 0</strong></div>
+            </div>
+            <button class="btn btn-black w-full" onclick="openCheckout()">PROCEED TO CHECKOUT</button>
+            <button class="btn btn-outline w-full mt-2" onclick="toggleCart()">CONTINUE SHOPPING</button>
         </div>
     </div>
 
-    <!-- Multi-Step Checkout Modal -->
+    <!-- UPDATED CHECKOUT with Email + COD fee notice -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-container">
             <div class="checkout-header">
                 <h2>Checkout</h2>
                 <button class="icon-btn" onclick="closeCheckout()"><i class="ph ph-x"></i></button>
             </div>
-            
             <div class="checkout-content">
-                <!-- Left: Form -->
                 <div class="checkout-form-area">
                     <form id="checkoutForm" onsubmit="event.preventDefault(); submitOrder();">
-                        
                         <div class="form-section">
                             <h3>1. Shipping Information</h3>
                             <div class="form-grid">
@@ -268,6 +262,11 @@
                                 <div class="form-group">
                                     <label>Alternate Phone</label>
                                     <input type="tel" id="chkAltPhone" placeholder="Optional">
+                                </div>
+                                <!-- EMAIL - REQUIRED -->
+                                <div class="form-group span-2">
+                                    <label>Email Address *</label>
+                                    <input type="email" id="chkEmail" required placeholder="your@email.com">
                                 </div>
                                 <div class="form-group span-2">
                                     <label>Full Address (House, Street, Area) *</label>
@@ -307,20 +306,32 @@
                                     <input type="radio" name="paymentMethod" value="online" checked id="payOnline">
                                     <label for="payOnline">
                                         <strong>Online Payment (UPI, Cards, NetBanking)</strong>
-                                        <span class="badge green-badge">Recommended</span>
-                                        <p>Fast, secure, and touchless delivery.</p>
+                                        <span class="badge green-badge">Recommended — Save ₹100</span>
+                                        <p>Fast, secure, and touchless delivery. No extra charges.</p>
                                     </label>
                                 </div>
                                 <div class="payment-card" onclick="selectPayment('cod')">
                                     <input type="radio" name="paymentMethod" value="cod" id="payCod">
                                     <label for="payCod">
                                         <strong>Cash on Delivery (COD)</strong>
-                                        <p>Pay when you receive the product.</p>
+                                        <span class="badge" style="background:#f59e0b;color:#000;">+₹100 COD charge</span>
+                                        <p>₹100 advance via UPI required. Remaining on delivery.</p>
                                     </label>
                                 </div>
                             </div>
+                            <!-- COD Notice box - shown only when COD selected -->
+                            <div id="codNotice" style="display:none;background:#1a1a00;border:1px solid #f59e0b;border-radius:8px;padding:12px;margin-top:12px;">
+                                <p style="color:#f59e0b;font-size:0.85rem;margin:0;font-weight:600;">
+                                    ⚠️ COD Order Notice
+                                </p>
+                                <p style="color:#ccc;font-size:0.82rem;margin:6px 0 0;">
+                                    • ₹100 extra COD charge applies<br>
+                                    • ₹100 advance payment required via UPI/WhatsApp before shipping<br>
+                                    • Our team will contact you on WhatsApp to collect advance
+                                </p>
+                            </div>
                         </div>
-                        
+
                         <div id="checkoutFeedback" class="feedback-msg"></div>
 
                         <button type="submit" class="btn btn-green w-full place-order-btn">
@@ -329,51 +340,38 @@
                     </form>
                 </div>
 
-                <!-- Right: Summary -->
                 <div class="checkout-summary-area">
                     <h3>Order Summary</h3>
-                    <div class="summary-items" id="summaryItemsContainer">
-                        <!-- Filled by JS -->
-                    </div>
+                    <div class="summary-items" id="summaryItemsContainer"></div>
                     <div class="summary-totals">
-                       <div class="total-row"><span>Subtotal:</span> <span id="summarySubtotal">Rs. 0</span></div>
-                       <div class="total-row"><span>Shipping:</span> <span class="free-text">FREE</span></div>
-                       <div class="total-row grand-total"><span>Total:</span> <strong id="summaryTotal">Rs. 0</strong></div>
+                        <div class="total-row"><span>Subtotal:</span> <span id="summarySubtotal">Rs. 0</span></div>
+                        <div class="total-row"><span>Shipping:</span> <span class="free-text">FREE</span></div>
+                        <div class="total-row" id="codFeeRow" style="display:none;"><span>COD Fee:</span> <span style="color:#f59e0b;">+ Rs. 100</span></div>
+                        <div class="total-row grand-total"><span>Total:</span> <strong id="summaryTotal">Rs. 0</strong></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-
-    <!-- Floating WhatsApp Fixed Button -->
     <a href="https://wa.me/918281097861" target="_blank" class="floating-whatsapp">
         <i class="ph-fill ph-whatsapp-logo"></i>
     </a>
 
-    <!-- Custom JS Application Logic -->
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
     <script>
-        // Header scroll glow
         window.addEventListener('scroll', () => {
             const h = document.getElementById('mainHeader');
             if(h) h.classList.toggle('scrolled', window.scrollY > 40);
         });
-
-        // Scroll reveal — sections
         const sectionObs = new IntersectionObserver((entries) => {
             entries.forEach(e => {
-                if(e.isIntersecting) {
-                    e.target.classList.add('visible');
-                    sectionObs.unobserve(e.target);
-                }
+                if(e.isIntersecting) { e.target.classList.add('visible'); sectionObs.unobserve(e.target); }
             });
         }, { threshold: 0.08 });
         document.querySelectorAll('.reveal').forEach(el => sectionObs.observe(el));
-
-        // Staggered card reveal — product cards, feature cards, collection cards
         const cardObs = new IntersectionObserver((entries) => {
-            entries.forEach((e, i) => {
+            entries.forEach((e) => {
                 if(e.isIntersecting) {
                     const delay = Array.from(e.target.parentElement.children).indexOf(e.target) * 80;
                     setTimeout(() => e.target.classList.add('card-visible'), delay);
@@ -381,16 +379,11 @@
                 }
             });
         }, { threshold: 0.05 });
-
-        // Observe after products are rendered
         const waitForCards = setInterval(() => {
             const cards = document.querySelectorAll('.product-card, .feature-card, .collection-card');
             if(cards.length > 0) {
                 clearInterval(waitForCards);
-                cards.forEach(c => {
-                    c.classList.add('card-reveal');
-                    cardObs.observe(c);
-                });
+                cards.forEach(c => { c.classList.add('card-reveal'); cardObs.observe(c); });
             }
         }, 100);
     </script>
