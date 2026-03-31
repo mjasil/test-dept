@@ -290,7 +290,7 @@ async function renderProductDetail() {
             <!-- BUY NOW BUTTON -->
             <button onclick="buyNow('${product.id}')"
                 id="buyNowBtn"
-                style="width:100%;padding:18px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:background 0.2s;"
+                style="width:100%;padding:18px;background:#000000;color:#fff;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:background 0.2s;"
                 onmouseover="this.style.background='#15803d'"
                 onmouseout="this.style.background='#16a34a'"
                 ${outOfStock ? 'disabled style="width:100%;padding:18px;background:#333;color:#666;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"' : ''}>
