@@ -1,6 +1,6 @@
 /**
  * DEPT STORE | Main Logic
- * Updated: Multi-image gallery + Color variants
+ * Updated: New product page UI matching reference
  */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -52,7 +52,6 @@ const elements = {
     checkoutFeedback: document.getElementById('checkoutFeedback')
 };
 
-// --- INIT ---
 document.addEventListener('DOMContentLoaded', async () => {
     applySiteAssets();
     setupSearch();
@@ -81,7 +80,6 @@ function loadRazorpayScript() {
     document.head.appendChild(script);
 }
 
-// --- LOAD PRODUCTS ---
 async function loadProductsFromFirebase() {
     try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -114,7 +112,6 @@ async function loadProductsFromFirebase() {
     }
 }
 
-// --- RENDER PRODUCTS (catalog page) ---
 function renderProducts() {
     if (!elements.productGrid) return;
 
@@ -153,17 +150,10 @@ function renderProducts() {
                 </div>
                 <div class="product-body" style="padding-bottom:0;">
                     <h3>${product.name}</h3>
-                    ${product.rating ? `<div class="product-rating">${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))} <span>(${product.rating})</span></div>` : ''}
                     <div class="product-price">
                         ${hasDiscount ? `<span class="old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
                         <span class="new-price">Rs. ${Number(product.price).toLocaleString()}</span>
                     </div>
-                    ${product.variants && product.variants.length > 0 ? `
-                    <div style="display:flex;gap:4px;margin-top:8px;">
-                        ${product.variants.slice(0,5).map(v => `
-                            <div title="${v.name}" style="width:14px;height:14px;border-radius:50%;background:${v.name.toLowerCase()};border:1px solid #555;"></div>
-                        `).join('')}
-                    </div>` : ''}
                 </div>
             </a>
             <div class="product-actions" style="padding:1rem 1.25rem 1.25rem;">
@@ -178,7 +168,7 @@ function renderProducts() {
     }).join('');
 }
 
-// --- RENDER PRODUCT DETAIL (product page) ---
+// --- RENDER PRODUCT DETAIL ---
 async function renderProductDetail() {
     const detailArea = document.getElementById('productDetailArea');
     const loadingEl = document.getElementById('productLoading');
@@ -209,7 +199,6 @@ async function renderProductDetail() {
 
         if (!state.products.find(p => p.id === product.id)) state.products.push(product);
 
-        // Build images array
         const images = product.images && product.images.length > 0
             ? product.images
             : (product.imageURL ? [product.imageURL] : []);
@@ -218,98 +207,137 @@ async function renderProductDetail() {
         const outOfStock = Number(product.stock) === 0;
         const hasVariants = product.variants && product.variants.length > 0;
 
-        detailArea.innerHTML = `
-            <!-- Image Gallery -->
-            <div class="pd-image" style="position:relative;">
-                <div id="mainImageWrap" style="width:100%;height:100%;overflow:hidden;">
-                    <img id="mainProductImage"
-                        src="${images[0] || ''}"
-                        alt="${product.name}"
-                        style="width:100%;height:100%;object-fit:cover;transition:opacity 0.3s;">
-                </div>
-                ${product.tag ? `<span style="position:absolute;top:20px;left:20px;background:#000;color:#fff;font-size:0.9rem;font-weight:700;padding:6px 12px;border-radius:6px;z-index:2;">${product.tag}</span>` : ''}
+        // Calculate save percentage
+        const savePercent = hasDiscount
+            ? Math.round((1 - Number(product.price) / Number(product.originalPrice)) * 100)
+            : 0;
 
-                <!-- Image dots -->
-                ${images.length > 1 ? `
-                <div id="imageDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;">
-                    ${images.map((_, i) => `
-                        <button onclick="switchImage(${i})" id="dot-${i}"
-                            style="width:8px;height:8px;border-radius:50%;border:none;cursor:pointer;transition:all 0.2s;background:${i === 0 ? '#fff' : 'rgba(255,255,255,0.4)'};">
-                        </button>
-                    `).join('')}
-                </div>` : ''}
+        // Check if item already in cart
+        const inCart = state.cart.some(i => i.id === product.id);
+
+        detailArea.innerHTML = `
+        <div style="max-width:600px; margin:0 auto; padding:0 0 2rem;">
+
+            <!-- MAIN IMAGE -->
+            <div style="width:100%; aspect-ratio:1/1; background:#111; border-radius:12px; overflow:hidden; margin-bottom:12px;">
+                <img id="mainProductImage"
+                    src="${images[0] || ''}"
+                    alt="${product.name}"
+                    style="width:100%;height:100%;object-fit:cover;transition:opacity 0.25s;">
             </div>
 
-            <!-- Product Info -->
-            <div class="pd-info">
-                <h1 class="pd-title">${product.name}</h1>
-
-                ${product.rating ? `
-                <div class="pd-rating">
-                    ${'★'.repeat(Math.floor(product.rating))}${'☆'.repeat(5-Math.floor(product.rating))}
-                    <span>(${product.rating})</span>
-                </div>` : ''}
-
-                <!-- Price — updates when color selected -->
-                <div class="pd-price-wrap">
-                    <span class="pd-new-price" id="productPrice">Rs. ${Number(product.price).toLocaleString()}</span>
-                    ${hasDiscount ? `<span class="pd-old-price">Rs. ${Number(product.originalPrice).toLocaleString()}</span>` : ''}
-                </div>
-
-                <!-- Thumbnail strip -->
-                ${images.length > 1 ? `
-                <div style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap;">
-                    ${images.map((img, i) => `
-                        <img src="${img}" onclick="switchImage(${i})" id="thumb-${i}"
-                            style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${i === 0 ? '#fff' : '#333'};transition:border 0.2s;"
-                            onerror="this.style.display='none'">
-                    `).join('')}
-                </div>` : ''}
-
-                <!-- Color Variants -->
-                ${hasVariants ? `
-                <div style="margin:16px 0;">
-                    <p style="color:#aaa;font-size:0.9rem;margin-bottom:8px;">
-                        ${product.variantTitle || 'Color'}:
-                        <span id="selectedColorName" style="color:#fff;font-weight:600;margin-left:4px;">
-                            ${product.variants[0].name}
-                        </span>
-                    </p>
-                    <div style="display:flex;gap:10px;flex-wrap:wrap;" id="colorSelector">
-                        ${product.variants.map((v, i) => `
-                            <button
-                                onclick="selectVariant(${i})"
-                                id="variantBtn-${i}"
-                                title="${v.name}"
-                                style="
-                                    width:32px;height:32px;border-radius:50%;
-                                    background:${v.name.toLowerCase()};
-                                    border:${i === 0 ? '3px solid #fff' : '2px solid #555'};
-                                    cursor:pointer;transition:all 0.2s;
-                                    box-shadow:${i === 0 ? '0 0 0 2px #000' : 'none'};
-                                ">
-                            </button>
-                        `).join('')}
+            <!-- THUMBNAIL ROW -->
+            ${images.length > 1 ? `
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;">
+                ${images.map((img, i) => `
+                    <div onclick="switchImage(${i})" id="thumb-wrap-${i}"
+                        style="aspect-ratio:1/1;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid ${i===0?'#fff':'#333'};transition:border 0.2s;">
+                        <img src="${img}" style="width:100%;height:100%;object-fit:cover;"
+                            onerror="this.parentElement.style.display='none'">
                     </div>
-                </div>` : ''}
+                `).join('')}
+            </div>` : ''}
 
-                <!-- Description -->
-                <p class="pd-desc" style="white-space:pre-line;">${product.description || 'Premium quality product.'}</p>
+            <!-- PRODUCT NAME -->
+            <h1 style="font-size:1.6rem;font-weight:800;color:var(--text-primary, #fff);margin-bottom:8px;line-height:1.2;">
+                ${product.name}
+            </h1>
 
-                <!-- Stock -->
-                <p style="color:${outOfStock ? '#ef4444' : '#4ade80'};font-weight:600;margin-bottom:1rem;">
-                    ${outOfStock ? '✗ Out of Stock' : `✓ In Stock (${product.stock} available)`}
-                </p>
-
-                <!-- Actions -->
-                <div class="pd-actions">
-                    <button class="btn btn-green" onclick="buyNow('${product.id}')" ${outOfStock ? 'disabled style="opacity:0.5;"' : ''}>BUY NOW</button>
-                    <button class="btn btn-outline" onclick="addToCart('${product.id}')" ${outOfStock ? 'disabled style="opacity:0.5;"' : ''}><i class="ph ph-shopping-bag"></i> Add to Cart</button>
+            <!-- RATING -->
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;">
+                <div style="display:flex;gap:2px;">
+                    ${[1,2,3,4,5].map(star => `
+                        <span style="font-size:1.1rem;color:${star <= Math.round(product.rating||0) ? '#f59e0b' : '#444'};">★</span>
+                    `).join('')}
                 </div>
-            </div>`;
+                <span style="color:#888;font-size:0.85rem;">${product.rating ? `${product.rating} reviews` : '0 reviews'}</span>
+            </div>
+
+            <!-- PRICE -->
+            <div style="margin-bottom:20px;">
+                ${hasDiscount ? `<p style="color:#888;font-size:0.85rem;margin-bottom:4px;">Special Price</p>` : ''}
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                    ${hasDiscount ? `<span style="color:#888;font-size:1.1rem;text-decoration:line-through;">₹${Number(product.originalPrice).toLocaleString()}</span>` : ''}
+                    <span style="color:var(--text-primary,#fff);font-size:1.8rem;font-weight:800;">₹${Number(product.price).toLocaleString()}</span>
+                    ${hasDiscount ? `<span style="background:#333;color:#fff;font-size:0.85rem;font-weight:700;padding:4px 10px;border-radius:20px;">Save ${savePercent}%</span>` : ''}
+                </div>
+            </div>
+
+            <!-- COLOR VARIANTS -->
+            ${hasVariants ? `
+            <div style="margin-bottom:20px;padding:16px;background:#111;border-radius:12px;border:1px solid #222;">
+                <p style="color:#aaa;font-size:0.85rem;margin-bottom:10px;">
+                    ${product.variantTitle || 'Color'}:
+                    <span id="selectedColorName" style="color:#fff;font-weight:700;margin-left:4px;">${product.variants[0].name}</span>
+                </p>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;" id="colorSelector">
+                    ${product.variants.map((v, i) => `
+                        <button onclick="selectVariant(${i})" id="variantBtn-${i}" title="${v.name}"
+                            style="width:36px;height:36px;border-radius:50%;background:${v.name.toLowerCase()};
+                            border:${i===0?'3px solid #fff':'2px solid #555'};cursor:pointer;transition:all 0.2s;
+                            box-shadow:${i===0?'0 0 0 2px rgba(255,255,255,0.3)':'none'};">
+                        </button>
+                    `).join('')}
+                </div>
+            </div>` : ''}
+
+            <!-- IN CART MESSAGE -->
+            <div id="inCartMsg" style="display:${inCart?'flex':'none'};align-items:center;gap:8px;color:#4ade80;font-weight:600;margin-bottom:12px;">
+                <i class="ph ph-check-circle" style="font-size:1.2rem;"></i>
+                This item is in your cart
+            </div>
+
+            <!-- BUY NOW BUTTON -->
+            <button onclick="buyNow('${product.id}')"
+                id="buyNowBtn"
+                style="width:100%;padding:18px;background:#16a34a;color:#fff;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:background 0.2s;"
+                onmouseover="this.style.background='#15803d'"
+                onmouseout="this.style.background='#16a34a'"
+                ${outOfStock ? 'disabled style="width:100%;padding:18px;background:#333;color:#666;border:none;border-radius:12px;font-size:1.1rem;font-weight:700;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;"' : ''}>
+                <i class="ph-bold ph-lightning"></i>
+                ${outOfStock ? 'Out of Stock' : 'Buy Now'}
+            </button>
+
+            <!-- ADD TO CART BUTTON -->
+            <button onclick="addToCartFromPage('${product.id}')"
+                id="addToCartBtn"
+                style="width:100%;padding:16px;background:transparent;color:var(--text-primary,#fff);border:2px solid #333;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;transition:all 0.2s;"
+                onmouseover="this.style.borderColor='#fff'"
+                onmouseout="this.style.borderColor='#333'"
+                ${outOfStock ? 'disabled style="width:100%;padding:16px;background:transparent;color:#555;border:2px solid #222;border-radius:12px;font-size:1rem;font-weight:600;cursor:not-allowed;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;"' : ''}>
+                <i class="ph ph-shopping-bag"></i>
+                ${inCart ? 'View in Cart' : 'Add to Cart'}
+            </button>
+
+            <!-- BUTTON EXPLANATIONS -->
+            <div style="border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:20px;">
+                <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">
+                    <i class="ph-bold ph-lightning" style="color:#16a34a;font-size:1rem;margin-top:2px;flex-shrink:0;"></i>
+                    <p style="color:#aaa;font-size:0.85rem;margin:0;"><span style="color:#fff;font-weight:600;">Buy Now:</span> Add to cart and proceed to checkout immediately</p>
+                </div>
+                <div style="display:flex;align-items:flex-start;gap:10px;">
+                    <i class="ph ph-shopping-bag" style="color:#888;font-size:1rem;margin-top:2px;flex-shrink:0;"></i>
+                    <p style="color:#aaa;font-size:0.85rem;margin:0;"><span style="color:#fff;font-weight:600;">Add to Cart:</span> Add to cart and continue shopping</p>
+                </div>
+            </div>
+
+            <!-- DESCRIPTION -->
+            <div style="border:1px solid #222;border-radius:12px;padding:16px;margin-bottom:16px;">
+                <h3 style="color:#fff;font-size:1rem;font-weight:700;margin-bottom:10px;">Product Details</h3>
+                <p style="color:#aaa;font-size:0.9rem;line-height:1.6;white-space:pre-line;margin:0;">
+                    ${product.description || 'Premium quality product. Carefully crafted for durability and style.'}
+                </p>
+            </div>
+
+            <!-- STOCK STATUS -->
+            <p style="color:${outOfStock?'#ef4444':'#4ade80'};font-size:0.85rem;font-weight:600;">
+                ${outOfStock ? '✗ Out of Stock' : `✓ In Stock (${product.stock} available)`}
+            </p>
+
+        </div>`;
 
         // Auto select first variant
-        if (hasVariants) selectVariant(0);
+        if (hasVariants) selectVariant(0, false);
 
     } catch (error) {
         console.error('Product load error:', error);
@@ -323,72 +351,75 @@ async function renderProductDetail() {
 window.switchImage = (index) => {
     const product = state.currentProduct;
     if (!product) return;
-
-    const images = product.images && product.images.length > 0
-        ? product.images : [product.imageURL];
-
+    const images = product.images && product.images.length > 0 ? product.images : [product.imageURL];
     state.currentImageIndex = index;
 
     const mainImg = document.getElementById('mainProductImage');
     if (mainImg && images[index]) {
         mainImg.style.opacity = '0';
-        setTimeout(() => {
-            mainImg.src = images[index];
-            mainImg.style.opacity = '1';
-        }, 150);
+        setTimeout(() => { mainImg.src = images[index]; mainImg.style.opacity = '1'; }, 150);
     }
 
-    // Update dots
+    // Update thumbnail borders
     images.forEach((_, i) => {
-        const dot = document.getElementById(`dot-${i}`);
-        if (dot) dot.style.background = i === index ? '#fff' : 'rgba(255,255,255,0.4)';
-        const thumb = document.getElementById(`thumb-${i}`);
-        if (thumb) thumb.style.border = `2px solid ${i === index ? '#fff' : '#333'}`;
+        const tw = document.getElementById(`thumb-wrap-${i}`);
+        if (tw) tw.style.border = `2px solid ${i === index ? '#fff' : '#333'}`;
     });
 };
 
 // --- SELECT COLOR VARIANT ---
-window.selectVariant = (index) => {
+window.selectVariant = (index, updateImage = true) => {
     const product = state.currentProduct;
     if (!product || !product.variants) return;
-
     const variant = product.variants[index];
     state.selectedVariant = variant;
 
-    // Update selected color name
     const nameEl = document.getElementById('selectedColorName');
     if (nameEl) nameEl.textContent = variant.name;
 
-    // Update price if variant has its own price
     const priceEl = document.getElementById('productPrice');
-    if (priceEl) {
-        const price = variant.price || product.price;
-        priceEl.textContent = `Rs. ${Number(price).toLocaleString()}`;
-    }
+    if (priceEl) priceEl.textContent = `Rs. ${Number(variant.price || product.price).toLocaleString()}`;
 
-    // Change main image to this variant's image
-    if (variant.image) {
+    if (updateImage && variant.image) {
         const mainImg = document.getElementById('mainProductImage');
         if (mainImg) {
             mainImg.style.opacity = '0';
-            setTimeout(() => {
-                mainImg.src = variant.image;
-                mainImg.style.opacity = '1';
-            }, 150);
+            setTimeout(() => { mainImg.src = variant.image; mainImg.style.opacity = '1'; }, 150);
         }
     }
 
-    // Update button borders
     product.variants.forEach((_, i) => {
         const btn = document.getElementById(`variantBtn-${i}`);
         if (btn) {
             btn.style.border = i === index ? '3px solid #fff' : '2px solid #555';
-            btn.style.boxShadow = i === index ? '0 0 0 2px #000' : 'none';
+            btn.style.boxShadow = i === index ? '0 0 0 2px rgba(255,255,255,0.3)' : 'none';
         }
     });
 };
 
-// --- APPLY SITE ASSETS ---
+// --- ADD TO CART FROM PRODUCT PAGE ---
+window.addToCartFromPage = (productId) => {
+    const product = state.products.find(p => p.id === productId);
+    if (!product) return;
+    const inCart = state.cart.some(i => i.id === productId);
+
+    if (inCart) {
+        // View in cart
+        toggleCart(true);
+        return;
+    }
+
+    addToCart(productId, true);
+
+    // Update button text
+    const btn = document.getElementById('addToCartBtn');
+    if (btn) btn.innerHTML = `<i class="ph ph-check"></i> View in Cart`;
+
+    // Show in cart message
+    const msg = document.getElementById('inCartMsg');
+    if (msg) msg.style.display = 'flex';
+};
+
 function applySiteAssets() {
     const logoImg = document.querySelector('.brand-logo img');
     if (logoImg && SITE_ASSETS.logo) logoImg.src = SITE_ASSETS.logo;
@@ -404,7 +435,6 @@ function applySiteAssets() {
     });
 }
 
-// --- SEARCH ---
 function setupSearch() {
     document.querySelectorAll('.search-bar').forEach(bar => {
         const input = bar.querySelector('input');
@@ -417,24 +447,20 @@ function setupSearch() {
 
 window.toggleMobileMenu = () => document.body.classList.toggle('mobile-menu-active');
 
-// --- CART ---
 window.addToCart = (productId, silent = false) => {
     const product = state.products.find(p => p.id === productId);
     if (!product) return;
     if (Number(product.stock) === 0) { alert("Sorry, this product is out of stock!"); return; }
 
-    // Use selected variant price if available
     const price = state.selectedVariant?.price || product.price;
     const variantName = state.selectedVariant?.name || '';
-
     const cartId = variantName ? `${productId}-${variantName}` : productId;
     const existing = state.cart.find(item => item.cartId === cartId);
 
     if (existing) { existing.quantity += 1; }
     else {
         state.cart.push({
-            cartId,
-            id: productId,
+            cartId, id: productId,
             name: product.name + (variantName ? ` (${variantName})` : ''),
             price: Number(price),
             imageURL: state.selectedVariant?.image || product.imageURL,
@@ -455,7 +481,7 @@ window.updateQuantity = (cartId, delta) => {
     const item = state.cart.find(i => i.cartId === cartId);
     if (!item) return;
     item.quantity += delta;
-    if (item.quantity <= 0) { state.cart = state.cart.filter(i => i.cartId !== cartId); }
+    if (item.quantity <= 0) state.cart = state.cart.filter(i => i.cartId !== cartId);
     updateCartUI();
 };
 
@@ -549,7 +575,7 @@ async function openRazorpay(orderDetails) {
             name: STORE_NAME,
             description: `Order - ${orderDetails.items.length} item(s)`,
             prefill: { name: orderDetails.customerName, contact: orderDetails.customerPhone },
-            theme: { color: "#000000" },
+            theme: { color: "#16a34a" },
             modal: { ondismiss: () => reject(new Error('Payment cancelled by user')) },
             handler: function(response) {
                 resolve({
