@@ -70,12 +70,12 @@
             <button class="icon-btn" onclick="toggleMobileMenu()"><i class="ph ph-x"></i></button>
         </div>
         <ul class="mobile-nav-links">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="catalog.html?category=ladies-watch">Ladies Watch</a></li>
-            <li><a href="catalog.html?category=mens-watch">Mens Watch</a></li>
-            <li><a href="catalog.html?category=gadgets">Gadgets</a></li>
-            <li><a href="catalog.html?category=all">Shop All</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
+            <li><a href="index.html" onclick="toggleMobileMenu()">Home</a></li>
+            <li><a href="catalog.html?category=ladies-watch" onclick="toggleMobileMenu()">Ladies Watch</a></li>
+            <li><a href="catalog.html?category=mens-watch" onclick="toggleMobileMenu()">Mens Watch</a></li>
+            <li><a href="catalog.html?category=gadgets" onclick="toggleMobileMenu()">Gadgets</a></li>
+            <li><a href="catalog.html?category=all" onclick="toggleMobileMenu()">Shop All</a></li>
+            <li><a href="terms.html" onclick="toggleMobileMenu()">Terms & Conditions</a></li>
         </ul>
     </div>
 
@@ -279,6 +279,11 @@
 
     <script type="module" src="main.js"></script>
     <script>
+        // Fix: expose toggleMobileMenu globally
+        function toggleMobileMenu() {
+            document.body.classList.toggle('mobile-menu-active');
+        }
+
         // Highlight active tab
         const cat = new URLSearchParams(window.location.search).get('category') || 'all';
         const activeTab = document.getElementById(`tab-${cat}`);
