@@ -456,6 +456,8 @@ function setupSearch() {
 }
 
 window.toggleMobileMenu = () => document.body.classList.toggle('mobile-menu-active');
+// Also expose as regular function for onclick compatibility
+function toggleMobileMenu() { document.body.classList.toggle('mobile-menu-active'); }
 
 window.addToCart = (productId, silent = false) => {
     const product = state.products.find(p => p.id === productId);
