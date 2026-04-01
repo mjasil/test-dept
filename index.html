@@ -71,34 +71,116 @@
             <button class="icon-btn" onclick="toggleMobileMenu()"><i class="ph ph-x"></i></button>
         </div>
         <ul class="mobile-nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#collections">Our Collections</a></li>
-            <li><a href="#trending">Trending Now</a></li>
-            <li><a href="terms.html">Terms & Conditions</a></li>
-            <li><a href="#">Track Order</a></li>
+            <li><a href="index.html" onclick="toggleMobileMenu()">Home</a></li>
+            <li><a href="catalog.html?category=all" onclick="toggleMobileMenu()">Our Collections</a></li>
+            <li><a href="index.html#trending" onclick="toggleMobileMenu()">Trending Now</a></li>
+            <li><a href="terms.html" onclick="toggleMobileMenu()">Terms & Conditions</a></li>
         </ul>
     </div>
 
     <main>
-        <!-- Hero Banner -->
-        <section class="hero-banner reveal">
-            <div class="banner-container">
-                <div class="banner-image">
-                    <div class="banner-text-overlay">
-                        <!-- UPDATED: 25K+ -->
-                        <h2>LOVED BY <span>25K+</span> CUSTOMERS</h2>
-                        <div class="quality-badge">
-                            <i class="ph-fill ph-check-circle"></i> BEST QUALITY
+        <!-- Hero Banner — 16:9 Auto Sliding -->
+        <section style="width:100%;padding:0;margin:0;">
+
+            <!-- ============================================================
+                 🖼️ BANNER IMAGES — ADD YOUR IMAGE PATHS HERE
+                 Upload images to your GitHub repo and paste the path below
+                 Example: "assets/images/banner1.jpg"
+                 ============================================================ -->
+            <div id="heroBanner" style="
+                position:relative;
+                width:100%;
+                aspect-ratio:16/9;
+                overflow:hidden;
+                background:#111;
+            ">
+                <!-- SLIDES — edit src to change images -->
+                <div class="hero-slide active" style="position:absolute;inset:0;transition:opacity 0.6s ease;">
+                    <img src="assets/images/banner1.jpg"
+                        onerror="this.style.display='none'"
+                        style="width:100%;height:100%;object-fit:cover;">
+                    <!-- Optional text overlay — remove if not needed -->
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);display:flex;align-items:flex-end;padding:20px;">
+                        <div>
+                            <h2 style="color:#fff;font-size:clamp(1rem,4vw,2rem);font-weight:800;margin:0;">LOVED BY <span style="color:#3b82f6;">25K+</span> CUSTOMERS</h2>
+                            <p style="color:#ddd;font-size:clamp(0.75rem,2vw,1rem);margin:4px 0 0;">Best Quality. Best Price.</p>
                         </div>
                     </div>
                 </div>
-                <button class="slider-btn prev-btn"><i class="ph ph-caret-left"></i></button>
-                <button class="slider-btn next-btn"><i class="ph ph-caret-right"></i></button>
-                <div class="slider-dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
+
+                <div class="hero-slide" style="position:absolute;inset:0;transition:opacity 0.6s ease;opacity:0;">
+                    <img src="assets/images/banner2.jpg"
+                        onerror="this.style.display='none'"
+                        style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);display:flex;align-items:flex-end;padding:20px;">
+                        <div>
+                            <h2 style="color:#fff;font-size:clamp(1rem,4vw,2rem);font-weight:800;margin:0;">PREMIUM WATCHES</h2>
+                            <p style="color:#ddd;font-size:clamp(0.75rem,2vw,1rem);margin:4px 0 0;">First Copy. Luxury Feel.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-slide" style="position:absolute;inset:0;transition:opacity 0.6s ease;opacity:0;">
+                    <img src="assets/images/banner3.jpg"
+                        onerror="this.style.display='none'"
+                        style="width:100%;height:100%;object-fit:cover;">
+                    <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);display:flex;align-items:flex-end;padding:20px;">
+                        <div>
+                            <h2 style="color:#fff;font-size:clamp(1rem,4vw,2rem);font-weight:800;margin:0;">LATEST GADGETS</h2>
+                            <p style="color:#ddd;font-size:clamp(0.75rem,2vw,1rem);margin:4px 0 0;">COD Available. Free Shipping.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- ============================================================
+                     Add more slides by copying a <div class="hero-slide"> block above
+                     ============================================================ -->
+
+                <!-- Prev / Next buttons -->
+                <button onclick="slideBanner(-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <button onclick="slideBanner(1)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;">
+                    <i class="ph ph-caret-right"></i>
+                </button>
+
+                <!-- Dots -->
+                <div id="bannerDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;">
+                    <button onclick="goToBannerSlide(0)" class="bdot" style="width:8px;height:8px;border-radius:50%;border:none;background:#fff;cursor:pointer;opacity:1;transition:opacity 0.2s;"></button>
+                    <button onclick="goToBannerSlide(1)" class="bdot" style="width:8px;height:8px;border-radius:50%;border:none;background:#fff;cursor:pointer;opacity:0.4;transition:opacity 0.2s;"></button>
+                    <button onclick="goToBannerSlide(2)" class="bdot" style="width:8px;height:8px;border-radius:50%;border:none;background:#fff;cursor:pointer;opacity:0.4;transition:opacity 0.2s;"></button>
                 </div>
             </div>
+
+            <script>
+                // Banner slider logic
+                let currentSlide = 0;
+                const slides = document.querySelectorAll('.hero-slide');
+                const dots = document.querySelectorAll('.bdot');
+                let autoSlide = setInterval(() => slideBanner(1), 3000);
+
+                function goToBannerSlide(index) {
+                    slides[currentSlide].style.opacity = '0';
+                    dots[currentSlide].style.opacity = '0.4';
+                    currentSlide = (index + slides.length) % slides.length;
+                    slides[currentSlide].style.opacity = '1';
+                    dots[currentSlide].style.opacity = '1';
+                }
+
+                function slideBanner(dir) {
+                    clearInterval(autoSlide);
+                    goToBannerSlide(currentSlide + dir);
+                    autoSlide = setInterval(() => slideBanner(1), 3000);
+                }
+
+                // Swipe support for mobile
+                let touchStartX = 0;
+                const banner = document.getElementById('heroBanner');
+                banner.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+                banner.addEventListener('touchend', e => {
+                    const diff = touchStartX - e.changedTouches[0].clientX;
+                    if (Math.abs(diff) > 50) slideBanner(diff > 0 ? 1 : -1);
+                });
+            </script>
         </section>
 
         <!-- UPDATED COLLECTIONS -->
@@ -360,6 +442,11 @@
 
     <script type="module" src="main.js"></script>
     <script>
+        // Fix: expose toggleMobileMenu globally before module loads
+        function toggleMobileMenu() {
+            document.body.classList.toggle('mobile-menu-active');
+        }
+
         window.addEventListener('scroll', () => {
             const h = document.getElementById('mainHeader');
             if(h) h.classList.toggle('scrolled', window.scrollY > 40);
