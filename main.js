@@ -675,17 +675,43 @@ window.submitOrder = async () => {
                 btn.disabled = false;
             }
         } else {
-            // COD
+            // COD — Pay ₹100 advance via Razorpay first
             if (elements.checkoutFeedback) {
                 elements.checkoutFeedback.style.display = 'block';
                 elements.checkoutFeedback.className = 'feedback-msg feedback-success';
-                elements.checkoutFeedback.innerHTML = `Placing your COD order...`;
+                elements.checkoutFeedback.innerHTML = `Opening payment for ₹100 COD advance...`;
             }
-            const orderId = await saveOrderToFirebase({
-                ...orderData, paymentMethod: "cod", paymentId: "COD",
-            });
-            completeOrderFlow();
-            window.location.href = `success.html?orderId=${orderId}`;
+            try {
+                // Razorpay opens for ₹100 advance only
+                const advancePayment = await openRazorpay({
+                    ...orderData,
+                    total: COD_FEE, // only ₹100 advance
+                    description: `COD Advance - ₹100`
+                });
+
+                // Advance paid ✅ — save full order to Firebase
+                const remainingAmount = subtotal; // full product price paid on delivery
+                const orderId = await saveOrderToFirebase({
+                    ...orderData,
+                    paymentMethod: "cod",
+                    advancePaymentId: advancePayment.paymentId,
+                    advancePaid: COD_FEE,
+                    remainingOnDelivery: remainingAmount,
+                    paymentId: `ADVANCE:${advancePayment.paymentId}`,
+                });
+
+                completeOrderFlow();
+                window.location.href = `success.html?orderId=${orderId}`;
+
+            } catch (advanceError) {
+                if (elements.checkoutFeedback) {
+                    elements.checkoutFeedback.style.display = 'block';
+                    elements.checkoutFeedback.className = 'feedback-msg feedback-error';
+                    elements.checkoutFeedback.innerHTML = `❌ ${advanceError.message}`;
+                }
+                btn.innerHTML = `PLACE ORDER <i class="ph-bold ph-lightning"></i>`;
+                btn.disabled = false;
+            }
         }
     } catch (error) {
         console.error('Order error:', error);
