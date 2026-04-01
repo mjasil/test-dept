@@ -29,6 +29,7 @@
     </div>
 
     <header class="header" id="mainHeader">
+        <!-- NEW HEADER: Logo centered -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;position:relative;">
             <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()" style="font-size:1.4rem;z-index:1;">
                 <i class="ph ph-list"></i>
@@ -68,6 +69,12 @@
     <main>
         <!-- Hero Banner — 16:9 Auto Sliding -->
         <section style="width:100%;padding:0;margin:0;">
+
+            <!-- ============================================================
+                 🖼️ BANNER IMAGES — ADD YOUR IMAGE PATHS HERE
+                 Upload images to your GitHub repo and paste the path below
+                 Example: "assets/images/banner1.jpg"
+                 ============================================================ -->
             <div id="heroBanner" style="
                 position:relative;
                 width:100%;
@@ -75,10 +82,12 @@
                 overflow:hidden;
                 background:#111;
             ">
+                <!-- SLIDES — edit src to change images -->
                 <div class="hero-slide active" style="position:absolute;inset:0;transition:opacity 0.6s ease;">
                     <img src="assets/images/banner1.jpg"
                         onerror="this.style.display='none'"
                         style="width:100%;height:100%;object-fit:cover;">
+                    <!-- Optional text overlay — remove if not needed -->
                     <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.5),transparent);display:flex;align-items:flex-end;padding:20px;">
                         <div>
                             <h2 style="color:#fff;font-size:clamp(1rem,4vw,2rem);font-weight:800;margin:0;">LOVED BY <span style="color:#3b82f6;">25K+</span> CUSTOMERS</h2>
@@ -110,7 +119,11 @@
                         </div>
                     </div>
                 </div>
+                <!-- ============================================================
+                     Add more slides by copying a <div class="hero-slide"> block above
+                     ============================================================ -->
 
+                <!-- Prev / Next buttons -->
                 <button onclick="slideBanner(-1)" style="position:absolute;left:10px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.4);color:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;">
                     <i class="ph ph-caret-left"></i>
                 </button>
@@ -118,6 +131,7 @@
                     <i class="ph ph-caret-right"></i>
                 </button>
 
+                <!-- Dots -->
                 <div id="bannerDots" style="position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;">
                     <button onclick="goToBannerSlide(0)" class="bdot" style="width:8px;height:8px;border-radius:50%;border:none;background:#fff;cursor:pointer;opacity:1;transition:opacity 0.2s;"></button>
                     <button onclick="goToBannerSlide(1)" class="bdot" style="width:8px;height:8px;border-radius:50%;border:none;background:#fff;cursor:pointer;opacity:0.4;transition:opacity 0.2s;"></button>
@@ -126,6 +140,7 @@
             </div>
 
             <script>
+                // Banner slider logic
                 let currentSlide = 0;
                 const slides = document.querySelectorAll('.hero-slide');
                 const dots = document.querySelectorAll('.bdot');
@@ -145,6 +160,7 @@
                     autoSlide = setInterval(() => slideBanner(1), 3000);
                 }
 
+                // Swipe support for mobile
                 let touchStartX = 0;
                 const banner = document.getElementById('heroBanner');
                 banner.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
@@ -155,7 +171,7 @@
             </script>
         </section>
 
-        <!-- COLLECTIONS -->
+        <!-- UPDATED COLLECTIONS -->
         <section id="collections" class="section-container reveal">
             <h2 class="section-title">OUR COLLECTIONS.</h2>
             <div class="collections-flex">
@@ -183,6 +199,7 @@
                     </div>
                     <h3 class="collection-name">GADGETS</h3>
                 </a>
+                <!-- ALL PRODUCTS -->
                 <a href="catalog.html?category=all" class="collection-card" style="text-decoration:none;">
                     <div class="collection-img-wrap">
                         <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-green);">
@@ -198,7 +215,7 @@
             </div>
         </section>
 
-        <!-- TRENDING PRODUCTS -->
+        <!-- TRENDING PRODUCTS (manually selected by admin) -->
         <section id="trending" class="section-container reveal">
             <h2 class="section-title">🔥 TRENDING NOW.</h2>
             <p style="color:#888;margin-top:-1rem;margin-bottom:2rem;font-size:0.9rem;">Hand-picked by our team</p>
@@ -209,275 +226,6 @@
                 </div>
             </div>
         </section>
-
-        <!-- ============================================================
-             INSTAGRAM SECTION — @deptstore.official
-             ============================================================ -->
-        <section class="instagram-section reveal" style="
-            padding: 3.5rem 1rem 4rem;
-            background: linear-gradient(180deg, #0a0a0a 0%, #0d0d1a 100%);
-            text-align: center;
-        ">
-            <div style="max-width: 360px; margin: 0 auto;">
-
-                <h2 class="section-title" style="margin-bottom: 0.2rem;">FIND US ON INSTAGRAM.</h2>
-                <p style="color: #666; font-size: 0.85rem; margin-bottom: 2rem; letter-spacing: 0.5px;">@deptstore.official</p>
-
-                <!-- Phone Frame -->
-                <div style="
-                    position: relative;
-                    display: inline-block;
-                    width: 100%;
-                    max-width: 280px;
-                ">
-                    <!-- Outer phone shell -->
-                    <div style="
-                        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
-                        border-radius: 38px;
-                        padding: 10px;
-                        box-shadow:
-                            0 0 0 1px #333,
-                            0 0 0 3px #1a1a1a,
-                            0 40px 100px rgba(0,0,0,0.9),
-                            0 0 80px rgba(188,24,136,0.08);
-                    ">
-                        <!-- Notch -->
-                        <div style="
-                            width: 70px; height: 18px;
-                            background: #111;
-                            border-radius: 0 0 12px 12px;
-                            margin: 0 auto 6px;
-                        "></div>
-
-                        <!-- Screen -->
-                        <div style="
-                            background: #000;
-                            border-radius: 22px;
-                            overflow: hidden;
-                            font-family: 'Inter', sans-serif;
-                        ">
-                            <!-- IG Top bar -->
-                            <div style="
-                                padding: 8px 12px 6px;
-                                display: flex;
-                                align-items: center;
-                                border-bottom: 0.5px solid #1f1f1f;
-                            ">
-                                <span style="font-size: 0.6rem; color: #fff; opacity: 0.4; margin-right: 6px;">‹</span>
-                                <span style="font-size: 0.68rem; font-weight: 700; color: #fff; flex: 1; text-align: center; letter-spacing: 0.3px;">deptstore.official</span>
-                                <span style="font-size: 0.7rem; color: #fff; opacity: 0.4;">⋯</span>
-                            </div>
-
-                            <!-- Profile row -->
-                            <div style="padding: 10px 12px 8px;">
-                                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                    <!-- Avatar with IG gradient ring -->
-                                    <div style="
-                                        width: 48px; height: 48px;
-                                        border-radius: 50%;
-                                        background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-                                        padding: 2px;
-                                        flex-shrink: 0;
-                                    ">
-                                        <div style="
-                                            width: 100%; height: 100%;
-                                            border-radius: 50%;
-                                            background: #111;
-                                            display: flex; align-items: center; justify-content: center;
-                                            font-size: 0.55rem; font-weight: 800; color: #fff;
-                                            letter-spacing: 0.3px;
-                                        ">DEPT</div>
-                                    </div>
-                                    <!-- Stats -->
-                                    <div style="display: flex; gap: 12px; flex: 1; justify-content: space-evenly;">
-                                        <div style="text-align: center;">
-                                            <div style="font-size: 0.72rem; font-weight: 700; color: #fff; line-height: 1.2;">200+</div>
-                                            <div style="font-size: 0.55rem; color: #666;">posts</div>
-                                        </div>
-                                        <div style="text-align: center;">
-                                            <div style="font-size: 0.72rem; font-weight: 700; color: #fff; line-height: 1.2;">5K+</div>
-                                            <div style="font-size: 0.55rem; color: #666;">followers</div>
-                                        </div>
-                                        <div style="text-align: center;">
-                                            <div style="font-size: 0.72rem; font-weight: 700; color: #fff; line-height: 1.2;">50+</div>
-                                            <div style="font-size: 0.55rem; color: #666;">following</div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Bio text -->
-                                <div style="margin-bottom: 8px; text-align: left;">
-                                    <div style="font-size: 0.65rem; font-weight: 700; color: #fff; margin-bottom: 2px;">dept.</div>
-                                    <div style="font-size: 0.58rem; color: #999; line-height: 1.55;">
-                                        Shopping & retail<br>
-                                        <span style="color: #fff; font-weight: 600;">SPEND LOW AND BLEND WOW! 🖤</span><br>
-                                        ••All India Delivery (COD) 🛒<br>
-                                        ••Kerala based store 📦<br>
-                                        ••DM for orders
-                                    </div>
-                                </div>
-
-                                <!-- Follow btn -->
-                                <a href="https://www.instagram.com/deptstore.official" target="_blank" style="
-                                    display: block;
-                                    background: linear-gradient(90deg, #f09433, #dc2743, #bc1888);
-                                    color: #fff;
-                                    font-size: 0.62rem;
-                                    font-weight: 700;
-                                    padding: 6px 0;
-                                    border-radius: 7px;
-                                    text-decoration: none;
-                                    text-align: center;
-                                    letter-spacing: 0.8px;
-                                    margin-bottom: 6px;
-                                ">FOLLOW</a>
-
-                                <!-- Highlights row -->
-                                <div style="
-                                    display: flex;
-                                    gap: 8px;
-                                    overflow-x: auto;
-                                    padding-bottom: 4px;
-                                    scrollbar-width: none;
-                                ">
-                                    <div style="flex-shrink:0;text-align:center;">
-                                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a1a2e,#16213e);border:1.5px solid #333;display:flex;align-items:center;justify-content:center;">
-                                            <i class="ph-fill ph-watch" style="font-size:0.9rem;color:#3b82f6;"></i>
-                                        </div>
-                                        <div style="font-size:0.48rem;color:#888;margin-top:3px;">rolex</div>
-                                    </div>
-                                    <div style="flex-shrink:0;text-align:center;">
-                                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a0533,#16213e);border:1.5px solid #333;display:flex;align-items:center;justify-content:center;">
-                                            <i class="ph-fill ph-watch" style="font-size:0.9rem;color:#8b5cf6;"></i>
-                                        </div>
-                                        <div style="font-size:0.48rem;color:#888;margin-top:3px;">omega</div>
-                                    </div>
-                                    <div style="flex-shrink:0;text-align:center;">
-                                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0f3460,#1a1a2e);border:1.5px solid #333;display:flex;align-items:center;justify-content:center;">
-                                            <i class="ph-fill ph-watch" style="font-size:0.9rem;color:#10b981;"></i>
-                                        </div>
-                                        <div style="font-size:0.48rem;color:#888;margin-top:3px;">rado</div>
-                                    </div>
-                                    <div style="flex-shrink:0;text-align:center;">
-                                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a1a00,#16213e);border:1.5px solid #333;display:flex;align-items:center;justify-content:center;">
-                                            <i class="ph-fill ph-device-mobile" style="font-size:0.9rem;color:#f59e0b;"></i>
-                                        </div>
-                                        <div style="font-size:0.48rem;color:#888;margin-top:3px;">gadgets</div>
-                                    </div>
-                                    <div style="flex-shrink:0;text-align:center;">
-                                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1a0020,#0f3460);border:1.5px solid #333;display:flex;align-items:center;justify-content:center;">
-                                            <i class="ph-fill ph-watch" style="font-size:0.9rem;color:#ec4899;"></i>
-                                        </div>
-                                        <div style="font-size:0.48rem;color:#888;margin-top:3px;">casio</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Grid divider -->
-                            <div style="display:flex;border-top:0.5px solid #1f1f1f;margin-bottom:1px;">
-                                <div style="flex:1;padding:6px;text-align:center;border-bottom:1px solid #fff;">
-                                    <i class="ph ph-grid-four" style="font-size:0.85rem;color:#fff;"></i>
-                                </div>
-                                <div style="flex:1;padding:6px;text-align:center;">
-                                    <i class="ph ph-film-strip" style="font-size:0.85rem;color:#555;"></i>
-                                </div>
-                                <div style="flex:1;padding:6px;text-align:center;">
-                                    <i class="ph ph-user-rectangle" style="font-size:0.85rem;color:#555;"></i>
-                                </div>
-                            </div>
-
-                            <!-- Posts 3x3 grid -->
-                            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5px;background:#111;">
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#0d1b2a,#1b2838);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#3b82f6;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#1a0533,#2d1b69);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#8b5cf6;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#064e3b,#065f46);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-device-mobile" style="font-size:1.3rem;color:#10b981;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#451a03,#78350f);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#f59e0b;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#4a044e,#701a75);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#ec4899;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#1e3a5f,#0f3460);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#60a5fa;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#14532d,#064e3b);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-device-mobile" style="font-size:1.3rem;color:#34d399;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#1c1917,#292524);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#d6d3d1;opacity:0.8;"></i>
-                                </div>
-                                <div style="aspect-ratio:1;background:linear-gradient(135deg,#312e81,#1e1b4b);display:flex;align-items:center;justify-content:center;">
-                                    <i class="ph-fill ph-watch" style="font-size:1.3rem;color:#a5b4fc;opacity:0.8;"></i>
-                                </div>
-                            </div>
-
-                            <!-- Bottom nav -->
-                            <div style="
-                                background:#000;
-                                padding:8px 16px 12px;
-                                display:flex;
-                                justify-content:space-between;
-                                align-items:center;
-                                border-top:0.5px solid #1f1f1f;
-                            ">
-                                <i class="ph ph-house" style="color:#fff;font-size:0.9rem;"></i>
-                                <i class="ph ph-magnifying-glass" style="color:#555;font-size:0.9rem;"></i>
-                                <i class="ph ph-plus-square" style="color:#555;font-size:0.9rem;"></i>
-                                <i class="ph ph-film-strip" style="color:#555;font-size:0.9rem;"></i>
-                                <div style="width:18px;height:18px;border-radius:50%;background:#2a2a2a;border:1px solid #444;"></div>
-                            </div>
-                        </div>
-
-                        <!-- Home indicator bar -->
-                        <div style="width:60px;height:3px;background:#444;border-radius:2px;margin:8px auto 2px;"></div>
-                    </div>
-
-                    <!-- Glow under phone -->
-                    <div style="
-                        position:absolute;
-                        bottom:-24px;left:50%;transform:translateX(-50%);
-                        width:55%;height:30px;
-                        background:radial-gradient(ellipse,rgba(188,24,136,0.25),transparent 70%);
-                        filter:blur(12px);
-                        pointer-events:none;
-                    "></div>
-                </div>
-
-                <!-- CTA Button -->
-                <div style="margin-top:2.5rem;">
-                    <a href="https://www.instagram.com/deptstore.official" target="_blank"
-                       style="
-                        display: inline-flex;
-                        align-items: center;
-                        gap: 8px;
-                        background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-                        color: #fff;
-                        font-size: 0.88rem;
-                        font-weight: 700;
-                        padding: 13px 32px;
-                        border-radius: 50px;
-                        text-decoration: none;
-                        letter-spacing: 0.8px;
-                        box-shadow: 0 6px 24px rgba(220,39,67,0.35);
-                        transition: transform 0.2s ease, box-shadow 0.2s ease;
-                       "
-                       onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 32px rgba(220,39,67,0.5)'"
-                       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 24px rgba(220,39,67,0.35)'"
-                    >
-                        <i class="ph-fill ph-instagram-logo" style="font-size:1.1rem;"></i>
-                        Our Instagram &rarr;
-                    </a>
-                </div>
-
-            </div>
-        </section>
-        <!-- ============================================================ -->
 
         <!-- Value Propositions -->
         <section class="features-section reveal">
@@ -560,6 +308,7 @@
         </div>
     </div>
 
+    <!-- UPDATED CHECKOUT with Email + COD fee notice -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-container">
             <div class="checkout-header">
@@ -584,6 +333,7 @@
                                     <label>Alternate Phone</label>
                                     <input type="tel" id="chkAltPhone" placeholder="Optional">
                                 </div>
+                                <!-- EMAIL - REQUIRED -->
                                 <div class="form-group span-2">
                                     <label>Email Address *</label>
                                     <input type="email" id="chkEmail" required placeholder="your@email.com">
@@ -639,8 +389,11 @@
                                     </label>
                                 </div>
                             </div>
+                            <!-- COD Notice box - shown only when COD selected -->
                             <div id="codNotice" style="display:none;background:#1a1a00;border:1px solid #f59e0b;border-radius:8px;padding:12px;margin-top:12px;">
-                                <p style="color:#f59e0b;font-size:0.85rem;margin:0;font-weight:600;">⚠️ COD Order Notice</p>
+                                <p style="color:#f59e0b;font-size:0.85rem;margin:0;font-weight:600;">
+                                    ⚠️ COD Order Notice
+                                </p>
                                 <p style="color:#ccc;font-size:0.82rem;margin:6px 0 0;">
                                     • ₹100 extra COD charge applies<br>
                                     • ₹100 advance paid online via Razorpay now<br>
@@ -677,6 +430,7 @@
 
     <script type="module" src="main.js"></script>
     <script>
+        // Fix: expose toggleMobileMenu globally before module loads
         function toggleMobileMenu() {
             document.body.classList.toggle('mobile-menu-active');
         }
@@ -710,3 +464,4 @@
     </script>
 </body>
 </html>
+
