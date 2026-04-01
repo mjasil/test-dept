@@ -29,37 +29,25 @@
     </div>
 
     <header class="header" id="mainHeader">
-        <div class="header-container">
-            <div class="header-left">
-                <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <i class="ph ph-list"></i>
-                </button>
-                <a href="index.html" class="brand-logo">
-                    <img src="logo.png" alt="DEPT." onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <span class="logo-text" style="display:none;">DEPT. <span>STORE</span></span>
-                </a>
-            </div>
-            <div class="header-center">
-                <div class="search-bar">
-                    <i class="ph ph-magnifying-glass search-icon"></i>
-                    <input type="text" placeholder="Search products, brands and more...">
-                    <button class="btn btn-black search-btn">Search</button>
-                </div>
-            </div>
-            <nav class="header-right nav-links">
-                <a href="#" class="active">Home</a>
-                <a href="terms.html">Terms</a>
-                <a href="#" class="nav-icon-link"><i class="ph ph-truck"></i> Track Order</a>
-                <button class="cart-icon-btn" onclick="toggleCart()">
-                    <i class="ph ph-shopping-bag"></i>
-                    <span class="cart-badge">0</span>
-                </button>
-            </nav>
+        <!-- NEW HEADER: Logo centered -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;position:relative;">
+            <button class="icon-btn mobile-menu-btn" onclick="toggleMobileMenu()" style="font-size:1.4rem;z-index:1;">
+                <i class="ph ph-list"></i>
+            </button>
+            <a href="index.html" style="position:absolute;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;text-decoration:none;">
+                <img src="logo.png" alt="DEPT STORE" style="height:40px;width:auto;object-fit:contain;" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                <span style="display:none;font-size:0.95rem;font-weight:800;color:var(--text-primary,#111);letter-spacing:1px;">DEPT.<span style="color:#3b82f6;">STORE</span></span>
+            </a>
+            <button class="cart-icon-btn" onclick="toggleCart()" style="font-size:1.3rem;z-index:1;">
+                <i class="ph ph-shopping-bag"></i>
+                <span class="cart-badge">0</span>
+            </button>
         </div>
-        <div class="mobile-search">
-            <div class="search-bar">
+        <div style="padding:0 16px 10px;">
+            <div class="search-bar" style="width:100%;">
                 <i class="ph ph-magnifying-glass search-icon"></i>
-                <input type="text" placeholder="Search...">
+                <input type="text" placeholder="Search products, brands and more...">
+                <button class="btn btn-black search-btn">Search</button>
             </div>
         </div>
     </header>
