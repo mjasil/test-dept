@@ -173,47 +173,115 @@
             </script>
         </section>
 
-        <!-- UPDATED COLLECTIONS -->
-        <section id="collections" class="section-container reveal">
-            <h2 class="section-title">OUR COLLECTIONS.</h2>
-            <div class="collections-flex">
-                <a href="catalog.html?category=ladies-watch" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap">
-                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-purple);">
-                            <i class="ph-fill ph-watch"></i>
-                        </div>
+        <!-- COLLECTIONS -->
+        <section id="collections" class="section-container reveal" style="padding-top:1.5rem;padding-bottom:1rem;">
+            <h2 class="section-title" style="margin-bottom:1rem;">OUR COLLECTIONS.</h2>
+
+            <!-- ============================================================
+                 📸 COLLECTION IMAGES — upload to GitHub:
+                 assets/images/col-ladies.jpg
+                 assets/images/col-mens.jpg
+                 assets/images/col-gadgets.jpg
+                 assets/images/col-all.jpg
+                 ============================================================ -->
+            <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch;">
+
+                <!-- LADIES -->
+                <a href="catalog.html?category=ladies-watch" style="
+                    flex-shrink:0;
+                    width:110px;
+                    height:110px;
+                    border-radius:12px;
+                    overflow:hidden;
+                    position:relative;
+                    display:block;
+                    text-decoration:none;
+                ">
+                    <img src="assets/images/col-ladies.jpg"
+                        style="width:100%;height:100%;object-fit:cover;"
+                        onerror="this.style.display='none'">
+                    <div style="
+                        position:absolute;inset:0;
+                        background:linear-gradient(to top,rgba(0,0,0,0.75) 40%,rgba(0,0,0,0.1));
+                        display:flex;align-items:flex-end;justify-content:center;
+                        padding-bottom:12px;
+                    ">
+                        <span style="color:#fff;font-size:0.72rem;font-weight:700;text-align:center;letter-spacing:0.5px;">LADIES</span>
                     </div>
-                    <h3 class="collection-name">LADIES WATCH</h3>
                 </a>
-                <a href="catalog.html?category=mens-watch" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap">
-                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-blue);">
-                            <i class="ph-fill ph-watch"></i>
-                        </div>
+
+                <!-- MENS -->
+                <a href="catalog.html?category=mens-watch" style="
+                    flex-shrink:0;
+                    width:110px;
+                    height:110px;
+                    border-radius:12px;
+                    overflow:hidden;
+                    position:relative;
+                    display:block;
+                    text-decoration:none;
+                ">
+                    <img src="assets/images/col-mens.jpg"
+                        style="width:100%;height:100%;object-fit:cover;"
+                        onerror="this.style.display='none'">
+                    <div style="
+                        position:absolute;inset:0;
+                        background:linear-gradient(to top,rgba(0,0,0,0.75) 40%,rgba(0,0,0,0.1));
+                        display:flex;align-items:flex-end;justify-content:center;
+                        padding-bottom:12px;
+                    ">
+                        <span style="color:#fff;font-size:0.72rem;font-weight:700;text-align:center;letter-spacing:0.5px;">MENS</span>
                     </div>
-                    <h3 class="collection-name">MENS WATCH</h3>
                 </a>
-                <a href="catalog.html?category=gadgets" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap">
-                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-neon);">
-                            <i class="ph-fill ph-device-mobile"></i>
-                        </div>
+
+                <!-- GADGETS -->
+                <a href="catalog.html?category=gadgets" style="
+                    flex-shrink:0;
+                    width:110px;
+                    height:110px;
+                    border-radius:12px;
+                    overflow:hidden;
+                    position:relative;
+                    display:block;
+                    text-decoration:none;
+                ">
+                    <img src="assets/images/col-gadgets.jpg"
+                        style="width:100%;height:100%;object-fit:cover;"
+                        onerror="this.style.display='none'">
+                    <div style="
+                        position:absolute;inset:0;
+                        background:linear-gradient(to top,rgba(0,0,0,0.75) 40%,rgba(0,0,0,0.1));
+                        display:flex;align-items:flex-end;justify-content:center;
+                        padding-bottom:12px;
+                    ">
+                        <span style="color:#fff;font-size:0.72rem;font-weight:700;text-align:center;letter-spacing:0.5px;">GADGETS</span>
                     </div>
-                    <h3 class="collection-name">GADGETS</h3>
                 </a>
+
                 <!-- ALL PRODUCTS -->
-                <a href="catalog.html?category=all" class="collection-card" style="text-decoration:none;">
-                    <div class="collection-img-wrap">
-                        <div class="img-placeholder bg-gray" style="display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--accent-green);">
-                            <i class="ph-fill ph-storefront"></i>
-                        </div>
+                <a href="catalog.html?category=all" style="
+                    flex-shrink:0;
+                    width:110px;
+                    height:110px;
+                    border-radius:12px;
+                    overflow:hidden;
+                    position:relative;
+                    display:block;
+                    text-decoration:none;
+                ">
+                    <img src="assets/images/col-all.jpg"
+                        style="width:100%;height:100%;object-fit:cover;"
+                        onerror="this.style.display='none'">
+                    <div style="
+                        position:absolute;inset:0;
+                        background:linear-gradient(to top,rgba(0,0,0,0.75) 40%,rgba(0,0,0,0.1));
+                        display:flex;align-items:flex-end;justify-content:center;
+                        padding-bottom:12px;
+                    ">
+                        <span style="color:#fff;font-size:0.72rem;font-weight:700;text-align:center;letter-spacing:0.5px;">ALL PRODUCTS</span>
                     </div>
-                    <h3 class="collection-name">SHOP ALL</h3>
                 </a>
-            </div>
-            <div class="collection-controls">
-                <button class="control-btn"><i class="ph ph-caret-left"></i></button>
-                <button class="control-btn"><i class="ph ph-caret-right"></i></button>
+
             </div>
         </section>
 
