@@ -226,8 +226,14 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        const orderId = params.get('orderId') || 'N/A';
-        document.getElementById('displayOrderId').textContent = orderId;
+        const orderId = params.get('orderId');
+
+        // If no orderId — redirect to homepage
+        if (!orderId) {
+            window.location.href = 'index.html';
+        } else {
+            document.getElementById('displayOrderId').textContent = orderId;
+        }
     </script>
 </body>
 </html>
