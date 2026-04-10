@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmed | DEPT STORE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            max-width: 440px;
+            width: 100%;
+            text-align: center;
+        }
+        .icon-wrap {
+            width: 80px;
+            height: 80px;
+            background: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: popIn 0.5s ease;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .title {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            color: #16a34a;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .order-id-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            color: #64748b;
+        }
+        .order-id-box strong {
+            color: #0f172a;
+            display: block;
+            margin-top: 4px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .whatsapp-box {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .wa-title {
+            color: #16a34a;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .wa-title i { font-size: 1.2rem; color: #25d366; }
+        .whatsapp-box p {
+            color: #374151;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .info-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px;
+        }
+        .info-item .emoji { font-size: 1.4rem; margin-bottom: 4px; }
+        .info-item .label { color: #94a3b8; font-size: 0.72rem; }
+        .info-item .value { color: #0f172a; font-size: 0.85rem; font-weight: 600; }
+        .btn-continue {
+            width: 100%;
+            padding: 16px;
+            background: #0f172a;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 10px;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+        .btn-continue:hover { opacity: 0.85; }
+        .btn-whatsapp {
+            width: 100%;
+            padding: 14px;
+            background: #25d366;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.2s;
+        }
+        .btn-whatsapp:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="card">
+
+        <!-- Success Icon -->
+        <div style="position:relative;width:80px;margin:0 auto 20px;">
+            <div class="icon-wrap" style="margin:0;">
+                <i class="ph-bold ph-check" style="font-size:2.5rem;color:#fff;"></i>
+            </div>
+            <!-- Blue verified tick badge -->
+            <div style="
+                position:absolute;
+                bottom:0;
+                right:0;
+                width:26px;
+                height:26px;
+                background:#1d9bf0;
+                border-radius:50%;
+                border:2px solid #fff;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+            ">
+                <i class="ph-bold ph-check" style="font-size:0.75rem;color:#fff;"></i>
+            </div>
+        </div>
+
+        <!-- Title -->
+        <h1 class="title">Thank You for Ordering!</h1>
+        <p class="subtitle">Your order has been placed successfully ✨</p>
+
+        <!-- Order ID -->
+        <div class="order-id-box">
+            Order ID
+            <strong id="displayOrderId">Loading...</strong>
+        </div>
+
+        <!-- WhatsApp Notice -->
+        <div class="whatsapp-box">
+            <div class="wa-title">
+                <i class="ph-fill ph-whatsapp-logo"></i>
+                You'll receive updates on WhatsApp
+            </div>
+            <p>
+                You will get more details with your <strong>Tracking ID</strong> on your WhatsApp number shortly.<br><br>
+                Our team will contact you to confirm your order and arrange delivery.
+            </p>
+        </div>
+
+        <!-- Info Grid -->
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="emoji">🚚</div>
+                <div class="label">Delivery</div>
+                <div class="value">3-7 Days</div>
+            </div>
+            <div class="info-item">
+                <div class="emoji">📦</div>
+                <div class="label">Shipping</div>
+                <div class="value">FREE</div>
+            </div>
+            <div class="info-item">
+                <div class="emoji">💬</div>
+                <div class="label">Support</div>
+                <div class="value">WhatsApp</div>
+            </div>
+            <div class="info-item">
+                <div class="emoji">🔒</div>
+                <div class="label">Secure</div>
+                <div class="value">100% Safe</div>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <button class="btn-continue" onclick="window.location.href='index.html'">
+            🛍️ Continue Shopping
+        </button>
+        <a href="https://wa.me/918281097861" target="_blank" class="btn-whatsapp">
+            <i class="ph-fill ph-whatsapp-logo" style="font-size:1.3rem;"></i>
+            Chat with Us on WhatsApp
+        </a>
+
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const orderId = params.get('orderId') || 'N/A';
+        document.getElementById('displayOrderId').textContent = orderId;
+    </script>
+</body>
+</html>
